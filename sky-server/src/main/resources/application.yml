@@ -23,6 +23,8 @@ mybatis:
     map-underscore-to-camel-case: true
 
 logging:
+  file:
+    name: logs/sky-take-out.log
   level:
     com:
       sky:

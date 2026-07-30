@@ -12,4 +12,12 @@ public interface EmployeeService {
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
+    /*
+    * 根据员工id查询
+    * @param Employee_ID
+    * @return
+    * */
+
+    Employee findById(Integer integer);
+
 }

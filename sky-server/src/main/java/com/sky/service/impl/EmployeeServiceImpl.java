@@ -39,7 +39,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         //密码比对
-        // TODO 后期需要进行md5加密，然后再进行比对
+        // 需要进行md5加密，然后再进行比对
+        password = DigestUtils.md5DigestAsHex(password.getBytes()); //md5加密
+        System.out.println("password:"+password);
         if (!password.equals(employee.getPassword())) {
             //密码错误
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
@@ -54,4 +56,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+    public Employee findById(Integer id){
+        Employee employee = employeeMapper.getByUserId(id);
+        if(employee==null){
+            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
+
+        return employee;
+    }
 }

@@ -23,7 +23,8 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
     private JwtProperties jwtProperties;
 
     /**
-     * 校验jwt
+     *
+     * 处理方法前的拦截器 校验jwt
      *
      * @param request
      * @param response
@@ -44,8 +45,8 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
         //2、校验令牌
         try {
             log.info("jwt校验:{}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
-            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
+            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token); //根据token解析出claims（载荷)
+            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString()); //获取员工id
             log.info("当前员工id：", empId);
             //3、通过，放行
             return true;
