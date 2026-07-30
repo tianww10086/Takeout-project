@@ -6,9 +6,7 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
-import com.sky.exception.AccountLockedException;
-import com.sky.exception.AccountNotFoundException;
-import com.sky.exception.PasswordErrorException;
+import com.sky.exception.*;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +69,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public boolean addEmployee(EmployeeDTO employeeDTO){
+
+        //健壮性代码
+        if(employeeDTO==null)
+            throw new NullEmployeeException("数据为空");
+
+        Employee exist_e = employeeMapper.getByUsername(employeeDTO.getUsername());
+        if(exist_e!=null)
+            throw new EmployeeExistedException("用户已存在");
+
         //构造Employee对象
         Employee  e = new Employee(employeeDTO);
         String password = DigestUtils.md5DigestAsHex("123456".getBytes());

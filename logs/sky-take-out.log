@@ -403,3 +403,66 @@ java.sql.SQLIntegrityConstraintViolationException: Column 'status' cannot be nul
 2026-07-30 16:05:37.517  INFO 25100 --- [http-nio-8080-exec-2] c.s.i.JwtTokenAdminInterceptor           : jwt校验:eyJhbGciOiJIUzI1NiJ9.eyJlbXBJZCI6MSwiZXhwIjoxNzg1Mzk5ODYxfQ.LQbhyIYKg-Q3U7_l2Ml2wQDRW35mqQ6lUccJRWXRkiI
 2026-07-30 16:05:37.518  INFO 25100 --- [http-nio-8080-exec-2] c.s.i.JwtTokenAdminInterceptor           : 当前员工id：
 2026-07-30 16:05:37.520  WARN 25100 --- [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "page"]
+2026-07-30 16:11:11.097  INFO 25100 --- [http-nio-8080-exec-6] c.s.i.JwtTokenAdminInterceptor           : jwt校验:eyJhbGciOiJIUzI1NiJ9.eyJlbXBJZCI6MSwiZXhwIjoxNzg1Mzk5ODYxfQ.LQbhyIYKg-Q3U7_l2Ml2wQDRW35mqQ6lUccJRWXRkiI
+2026-07-30 16:11:11.098  WARN 25100 --- [http-nio-8080-exec-3] o.s.web.servlet.PageNotFound             : No mapping for GET /admin/shop/status
+2026-07-30 16:11:11.099  INFO 25100 --- [http-nio-8080-exec-6] c.s.i.JwtTokenAdminInterceptor           : 当前员工id：
+2026-07-30 16:11:11.100  WARN 25100 --- [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "page"]
+2026-07-30 16:11:11.359  WARN 25100 --- [http-nio-8080-exec-5] o.s.web.servlet.PageNotFound             : No mapping for GET /ws/cgr0ge032kr
+2026-07-30 16:15:39.702  INFO 25100 --- [http-nio-8080-exec-4] c.s.i.JwtTokenAdminInterceptor           : jwt校验:eyJhbGciOiJIUzI1NiJ9.eyJlbXBJZCI6MSwiZXhwIjoxNzg1Mzk5ODYxfQ.LQbhyIYKg-Q3U7_l2Ml2wQDRW35mqQ6lUccJRWXRkiI
+2026-07-30 16:15:39.703  INFO 25100 --- [http-nio-8080-exec-4] c.s.i.JwtTokenAdminInterceptor           : 当前员工id：
+2026-07-30 16:15:49.110  INFO 25100 --- [http-nio-8080-exec-7] c.s.controller.admin.EmployeeController  : 员工登录：EmployeeLoginDTO(username=employee1, password=123456)
+2026-07-30 16:15:49.125 ERROR 25100 --- [http-nio-8080-exec-7] c.a.druid.pool.DruidAbstractDataSource   : discard long time none received connection. , jdbcUrl : jdbc:mysql://localhost:3306/sky_take_out?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true, jdbcUrl : jdbc:mysql://localhost:3306/sky_take_out?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true, lastPacketReceivedIdleMillis : 612140
+2026-07-30 16:15:49.128 DEBUG 25100 --- [http-nio-8080-exec-7] c.s.mapper.EmployeeMapper.getByUsername  : ==>  Preparing: select * from employee where username = ?
+2026-07-30 16:15:49.129 DEBUG 25100 --- [http-nio-8080-exec-7] c.s.mapper.EmployeeMapper.getByUsername  : ==> Parameters: employee1(String)
+2026-07-30 16:15:49.150 DEBUG 25100 --- [http-nio-8080-exec-7] c.s.mapper.EmployeeMapper.getByUsername  : <==      Total: 1
+2026-07-30 16:15:49.230  WARN 25100 --- [http-nio-8080-exec-8] o.s.web.servlet.PageNotFound             : No mapping for GET /admin/order/conditionSearch
+2026-07-30 16:15:49.231  WARN 25100 --- [http-nio-8080-exec-9] o.s.web.servlet.PageNotFound             : No mapping for GET /admin/shop/status
+2026-07-30 16:15:49.235  WARN 25100 --- [http-nio-8080-exec-10] o.s.web.servlet.PageNotFound             : No mapping for GET /admin/workspace/businessData
+2026-07-30 16:15:49.235  WARN 25100 --- [http-nio-8080-exec-1] o.s.web.servlet.PageNotFound             : No mapping for GET /admin/workspace/overviewOrders
+2026-07-30 16:15:49.241  WARN 25100 --- [http-nio-8080-exec-3] o.s.web.servlet.PageNotFound             : No mapping for GET /admin/workspace/overviewSetmeals
+2026-07-30 16:15:49.241  WARN 25100 --- [http-nio-8080-exec-2] o.s.web.servlet.PageNotFound             : No mapping for GET /admin/workspace/overviewDishes
+2026-07-30 16:15:49.506  WARN 25100 --- [http-nio-8080-exec-6] o.s.web.servlet.PageNotFound             : No mapping for GET /ws/bfsjbfyueq5
+2026-07-30 16:27:21.757  INFO 25100 --- [http-nio-8080-exec-5] c.s.i.JwtTokenAdminInterceptor           : jwt校验:eyJhbGciOiJIUzI1NiJ9.eyJlbXBJZCI6MiwiZXhwIjoxNzg1NDA2NTQ5fQ.AES4nWaSTN70ypTPdYBxIwNAwvj3v8ge3-CQoliB5KY
+2026-07-30 16:27:21.758  INFO 25100 --- [http-nio-8080-exec-5] c.s.i.JwtTokenAdminInterceptor           : 当前员工id：
+2026-07-30 16:27:21.758  WARN 25100 --- [http-nio-8080-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "page"]
+2026-07-30 16:37:18.606  INFO 25100 --- [http-nio-8080-exec-9] c.s.controller.admin.EmployeeController  : 员工登录：EmployeeLoginDTO(username=admin, password=123456)
+2026-07-30 16:37:18.607 ERROR 25100 --- [http-nio-8080-exec-9] c.a.druid.pool.DruidAbstractDataSource   : discard long time none received connection. , jdbcUrl : jdbc:mysql://localhost:3306/sky_take_out?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true, jdbcUrl : jdbc:mysql://localhost:3306/sky_take_out?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true, lastPacketReceivedIdleMillis : 1289470
+2026-07-30 16:37:18.611 DEBUG 25100 --- [http-nio-8080-exec-9] c.s.mapper.EmployeeMapper.getByUsername  : ==>  Preparing: select * from employee where username = ?
+2026-07-30 16:37:18.612 DEBUG 25100 --- [http-nio-8080-exec-9] c.s.mapper.EmployeeMapper.getByUsername  : ==> Parameters: admin(String)
+2026-07-30 16:37:18.614 DEBUG 25100 --- [http-nio-8080-exec-9] c.s.mapper.EmployeeMapper.getByUsername  : <==      Total: 1
+2026-07-30 16:39:16.345  INFO 25100 --- [http-nio-8080-exec-3] c.s.i.JwtTokenAdminInterceptor           : jwt校验:eyJhbGciOiJIUzI1NiJ9.eyJlbXBJZCI6MSwiZXhwIjoxNzg1NDA3ODM4fQ.mSn8p2Apr3bQUAKHSN04X6sXw0J6vF-FjSZCYd0BFk8
+2026-07-30 16:39:16.346  INFO 25100 --- [http-nio-8080-exec-3] c.s.i.JwtTokenAdminInterceptor           : 当前员工id：
+2026-07-30 16:39:16.347 ERROR 25100 --- [http-nio-8080-exec-3] c.a.druid.pool.DruidAbstractDataSource   : discard long time none received connection. , jdbcUrl : jdbc:mysql://localhost:3306/sky_take_out?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true, jdbcUrl : jdbc:mysql://localhost:3306/sky_take_out?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true, lastPacketReceivedIdleMillis : 117734
+2026-07-30 16:39:16.351 DEBUG 25100 --- [http-nio-8080-exec-3] c.s.mapper.EmployeeMapper.addUEmployee   : ==>  Preparing: INSERT INTO employee(name,username,password,phone,sex,id_number, create_time,update_time,create_user,update_user) values(?,?,?,?,?,? ,?,?,?,?)
+2026-07-30 16:39:16.351 DEBUG 25100 --- [http-nio-8080-exec-3] c.s.mapper.EmployeeMapper.addUEmployee   : ==> Parameters: 张三(String), employee2(String), e10adc3949ba59abbe56e057f20f883e(String), 17788859999(String), 1(String), 522225200411092863(String), 2026-07-30T16:39:16.347132700(LocalDateTime), 2026-07-30T16:39:16.347132700(LocalDateTime), 1(Long), 1(Long)
+2026-07-30 16:39:16.356 DEBUG 25100 --- [http-nio-8080-exec-3] c.s.mapper.EmployeeMapper.addUEmployee   : <==    Updates: 1
+2026-07-30 16:51:29.961  INFO 25100 --- [SpringApplicationShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2026-07-30 16:51:29.963  INFO 25100 --- [SpringApplicationShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2026-07-30 16:51:34.721  INFO 24228 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-07-30 16:51:34.724  INFO 24228 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-07-30 16:51:34.750  INFO 24228 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2026-07-30 16:51:35.243  INFO 24228 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2026-07-30 16:51:35.250  INFO 24228 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-07-30 16:51:35.251  INFO 24228 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.82]
+2026-07-30 16:51:35.340  INFO 24228 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-07-30 16:51:35.341  INFO 24228 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1182 ms
+2026-07-30 16:51:35.493  INFO 24228 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2026-07-30 16:51:35.586  INFO 24228 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2026-07-30 16:51:35.783  INFO 24228 --- [main] com.sky.config.WebMvcConfiguration       : 准备生成接口文档..
+2026-07-30 16:51:35.849  INFO 24228 --- [main] com.sky.config.WebMvcConfiguration       : 开始注册自定义拦截器...
+2026-07-30 16:51:35.909  INFO 24228 --- [main] com.sky.config.WebMvcConfiguration       : 开始设置静态资源映射
+2026-07-30 16:51:36.396  INFO 24228 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2026-07-30 16:51:36.543  INFO 24228 --- [main] com.sky.SkyApplication                   : server started
+2026-07-30 16:51:45.126  INFO 24228 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-30 16:51:45.126  INFO 24228 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-07-30 16:51:45.127  INFO 24228 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-07-30 16:51:45.138  INFO 24228 --- [http-nio-8080-exec-1] c.s.i.JwtTokenAdminInterceptor           : jwt校验:eyJhbGciOiJIUzI1NiJ9.eyJlbXBJZCI6MiwiZXhwIjoxNzg1NDA2NTQ5fQ.AES4nWaSTN70ypTPdYBxIwNAwvj3v8ge3-CQoliB5KY
+2026-07-30 16:51:45.220  INFO 24228 --- [http-nio-8080-exec-1] c.s.i.JwtTokenAdminInterceptor           : 当前员工id：
+2026-07-30 16:51:45.231  WARN 24228 --- [http-nio-8080-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: "page"]
+2026-07-30 16:52:05.974  INFO 24228 --- [http-nio-8080-exec-2] c.s.i.JwtTokenAdminInterceptor           : jwt校验:eyJhbGciOiJIUzI1NiJ9.eyJlbXBJZCI6MiwiZXhwIjoxNzg1NDA2NTQ5fQ.AES4nWaSTN70ypTPdYBxIwNAwvj3v8ge3-CQoliB5KY
+2026-07-30 16:52:05.975  INFO 24228 --- [http-nio-8080-exec-2] c.s.i.JwtTokenAdminInterceptor           : 当前员工id：
+2026-07-30 16:52:05.997  INFO 24228 --- [http-nio-8080-exec-2] c.s.controller.admin.EmployeeController  : 新增员工：EmployeeDTO(id=null, username=employee1, name=田韦韦, phone=17585842902, sex=1, idNumber=522225200312119034)
+2026-07-30 16:52:06.117 DEBUG 24228 --- [http-nio-8080-exec-2] c.s.mapper.EmployeeMapper.getByUsername  : ==>  Preparing: select * from employee where username = ?
+2026-07-30 16:52:06.135 DEBUG 24228 --- [http-nio-8080-exec-2] c.s.mapper.EmployeeMapper.getByUsername  : ==> Parameters: employee1(String)
+2026-07-30 16:52:06.154 DEBUG 24228 --- [http-nio-8080-exec-2] c.s.mapper.EmployeeMapper.getByUsername  : <==      Total: 1
+2026-07-30 16:52:06.156 ERROR 24228 --- [http-nio-8080-exec-2] com.sky.handler.GlobalExceptionHandler   : 异常信息：用户已存在

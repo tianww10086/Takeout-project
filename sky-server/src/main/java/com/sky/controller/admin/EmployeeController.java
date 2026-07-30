@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -97,7 +98,13 @@ public class EmployeeController {
      */
     @PostMapping
     public Result<String> addEmployee(@RequestBody EmployeeDTO employeeDTO){
+        log.info("新增员工：{}",employeeDTO);
         boolean result = employeeService.addEmployee(employeeDTO);
         return result?Result.success():Result.error("新增失败");
+    }
+
+    public Result<List<Employee>> pages(Integer index_page){
+
+        return null;
     }
 }
