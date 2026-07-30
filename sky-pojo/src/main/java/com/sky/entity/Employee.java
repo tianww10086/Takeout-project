@@ -20,9 +20,9 @@ public class Employee implements Serializable {
 
     private Long id;
 
-    private String username;
+    private String username; //用户名
 
-    private String name;
+    private String name; //员工姓名
 
     private String password;
 
@@ -34,10 +34,10 @@ public class Employee implements Serializable {
 
     private Integer status;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private LocalDateTime createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     private LocalDateTime updateTime;
 
     private Long createUser;

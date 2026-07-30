@@ -1,19 +1,24 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.*;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -74,9 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(employeeDTO==null)
             throw new NullEmployeeException("数据为空");
 
-        Employee exist_e = employeeMapper.getByUsername(employeeDTO.getUsername());
-        if(exist_e!=null)
-            throw new EmployeeExistedException("用户已存在");
+
 
         //构造Employee对象
         Employee  e = new Employee(employeeDTO);
@@ -88,4 +91,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         e.setUpdateUser(BaseContext.getCurrentId());
         return employeeMapper.addUEmployee(e)>0;
     }
+
+    @Override
+    public PageResult<Employee> pageQuery(EmployeePageQueryDTO epqd) {
+        //开始分页查询
+        PageHelper.startPage(epqd.getPage(),epqd.getPageSize());
+        Page<Employee> page =  employeeMapper.getPage(epqd);
+
+        // page.getTotal()是总条数，page.getResult是拿到的集合
+        return new PageResult<>(page.getTotal(),page.getResult());
+    }
+
+
 }

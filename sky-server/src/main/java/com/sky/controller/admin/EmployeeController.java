@@ -3,8 +3,10 @@ package com.sky.controller.admin;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
@@ -86,6 +88,7 @@ public class EmployeeController {
      * @return 返回结果
      */
     @GetMapping("/{id}")
+    @ApiOperation("员工id查询")
     public Result<Employee> findById(@PathVariable Integer id){
         Employee e=  employeeService.findById(id);
         return Result.success(e);
@@ -97,14 +100,24 @@ public class EmployeeController {
      * @return 操作的结果
      */
     @PostMapping
+    @ApiOperation("新增员工")
     public Result<String> addEmployee(@RequestBody EmployeeDTO employeeDTO){
         log.info("新增员工：{}",employeeDTO);
         boolean result = employeeService.addEmployee(employeeDTO);
         return result?Result.success():Result.error("新增失败");
     }
 
-    public Result<List<Employee>> pages(Integer index_page){
+    /**
+     *
+     * @param epqd
+     * @return
+     */
+    @GetMapping("/page")
+    @ApiOperation("员工分页查询")
+    public Result<PageResult<Employee>> pages(EmployeePageQueryDTO epqd){
+        log.info("员工分页查询，参数为{}",epqd);
+        PageResult<Employee> pageResult = employeeService.pageQuery(epqd);
 
-        return null;
+        return Result.success(pageResult);
     }
 }
