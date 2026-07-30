@@ -1,10 +1,12 @@
 package com.sky.dto;
 
+import io.swagger.annotations.Api;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@Api("新增员工时的数据模型")
 public class EmployeeDTO implements Serializable {
 
     private Long id;

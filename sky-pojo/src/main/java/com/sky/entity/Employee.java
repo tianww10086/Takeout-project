@@ -1,5 +1,7 @@
 package com.sky.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sky.dto.EmployeeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,14 +34,22 @@ public class Employee implements Serializable {
 
     private Integer status;
 
-    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
-    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     private Long createUser;
 
     private Long updateUser;
 
+    //根据前端传输过来的数据模型快捷构造
+    public Employee(EmployeeDTO dto){
+        this.name = dto.getName();
+        this.username = dto.getUsername();
+        this.sex = dto.getSex();
+        this.phone = dto.getPhone();
+        this.idNumber = dto.getIdNumber();
+    }
 }
