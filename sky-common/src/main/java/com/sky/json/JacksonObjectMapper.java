@@ -21,6 +21,9 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
  * 对象映射器:基于jackson将Java对象转为json，或者将json转为Java对象
  * 将JSON解析为Java对象的过程称为 [从JSON反序列化Java对象]
  * 从Java对象生成JSON的过程称为 [序列化Java对象到JSON]
+ *
+ * 这个类在 Spring Boot 项目中的核心作用是：作为全局的 JSON 序列化与反序列化配置器，
+ * 统一接管 Controller 层（接口层）所有请求和响应的 JSON 数据格式处理。
  */
 public class JacksonObjectMapper extends ObjectMapper {
 

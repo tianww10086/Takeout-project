@@ -30,12 +30,12 @@ public class Employee implements Serializable {
 
     private String sex;
 
-    private String idNumber;
+    private String idNumber; // 身份证号
 
-    private Integer status;
+    private Integer status; // 状态，1启用，0禁用
 
 
-    private LocalDateTime createTime;
+    private LocalDateTime createTime;  //员工创建时间
 
 
     private LocalDateTime updateTime;

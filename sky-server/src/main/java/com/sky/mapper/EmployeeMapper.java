@@ -38,4 +38,11 @@ public interface EmployeeMapper {
 
 
     Page<Employee> getPage(EmployeePageQueryDTO dto);
+
+
+    /**
+     * 根据主键动态修改属性
+     */
+
+    Integer  update(Employee e);
 }

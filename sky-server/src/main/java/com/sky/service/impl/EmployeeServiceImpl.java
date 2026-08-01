@@ -13,6 +13,7 @@ import com.sky.exception.*;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -79,8 +80,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(employeeDTO==null)
             throw new NullEmployeeException("数据为空");
 
-
-
         //构造Employee对象
         Employee  e = new Employee(employeeDTO);
         String password = DigestUtils.md5DigestAsHex("123456".getBytes());
@@ -102,5 +101,27 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new PageResult<>(page.getTotal(),page.getResult());
     }
 
+    /**
+     * 启用禁用员工账户
+     * @param status
+     * @param id
+     */
+    public boolean StartOrStop(Integer status, Long id){
+        Employee e = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+        return employeeMapper.update(e)>0;
+    }
 
+    @Override
+    public boolean updateEmployee(EmployeeDTO dto) {
+        Employee e = new Employee();
+
+        // 把DTO的同名属性拷贝到Employee对象里
+        BeanUtils.copyProperties(dto,e);
+        e.setUpdateTime(LocalDateTime.now()); //设置修改时间
+        e.setUpdateUser(BaseContext.getCurrentId()); //设置修改者id
+        return employeeMapper.update(e)>0;
+    }
 }

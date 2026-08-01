@@ -33,4 +33,18 @@ public interface EmployeeService {
 
 
     PageResult<Employee> pageQuery(EmployeePageQueryDTO epqd);
+
+    /**
+     * 启用禁用员工账户
+     * @param status
+     * @param id
+     */
+    boolean StartOrStop(Integer status, Long id);
+
+    /**
+     * 修改（编辑）员工信息
+     * @param dto
+     * @return
+     */
+    boolean updateEmployee(EmployeeDTO dto);
 }

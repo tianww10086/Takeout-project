@@ -91,6 +91,7 @@ public class EmployeeController {
     @ApiOperation("员工id查询")
     public Result<Employee> findById(@PathVariable Integer id){
         Employee e=  employeeService.findById(id);
+        e.setPassword(" ");
         return Result.success(e);
     }
 
@@ -120,4 +121,35 @@ public class EmployeeController {
 
         return Result.success(pageResult);
     }
+
+    /**
+     * 修改员工状态
+     * @param status 状态值
+     * @param id 员工id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用或禁用员工状态")
+    public Result StartOrStop(@PathVariable Integer status,Long id){
+        log.info("启用或禁用员工账户：{},{}",status,id);
+
+        boolean tof=  employeeService.StartOrStop(status,id);
+
+
+        return tof?Result.success():Result.error("员工状态修改失败");
+    }
+
+    /**
+     * 更新（编辑员工信息）
+     * @param dto 员工数据传输对象，用于接受前端发送的json数据
+     * @return 返回成功或错误信息
+     */
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result updateEmployee(@RequestBody EmployeeDTO dto){
+        log.info("修改员工：{}的信息",dto);
+        boolean tof = employeeService.updateEmployee(dto);
+        return tof?Result.success():Result.error("编辑员工信息失败");
+    }
+
 }

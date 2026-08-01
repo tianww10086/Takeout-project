@@ -80,11 +80,16 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
+    /**
+     * 配置额外的消息转换器，这里主要配置了Json--对象的序列化和反序列化
+     * @param converters 消息转换器
+     */
+
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         log.info("扩展消息转换器已启动");
-      MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-      converter.setObjectMapper(new JacksonObjectMapper());
-      converters.add(0,converter);
+      MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(); //json消息转换器
+      converter.setObjectMapper(new JacksonObjectMapper()); //重新 设置规则
+      converters.add(0,converter); // 将json序列化转换器的优先级设置为最高
     }
 }
