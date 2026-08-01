@@ -6,4 +6,5 @@
 **/test/
 application.yml
 application-*.yml
+logs/
 *.log
