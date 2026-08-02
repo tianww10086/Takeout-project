@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sky.mapper.CategoryMapper">
+    <sql id="pageQueryCondition">
+        <where>
+            <if test="name!=null and name!='' ">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="type!=null">
+                type = #{type}
+            </if>
+        </where>
+    </sql>
+
+
+
+    <select id="getCounts" resultType="java.lang.Integer">
+        select count(0)
+        from category
+        <include refid="pageQueryCondition"/>
+    </select>
+
+
+    <select id="pageQuery" resultType="Category">
+        select *
+        from category
+        <include refid="pageQueryCondition"/>
+        limit #{page},#{pageSize}
+    </select>
+
+    <update id="updateCategory" parameterType="Category">
+        update category
+        <set>
+            <if test="type != null">
+                type = #{type},
+            </if>
+
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+
+            <if test="status != null">
+                status = #{status},
+            </if>
+
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+        </set>
+
+        where id = #{id}
+    </update>
+
+</mapper>

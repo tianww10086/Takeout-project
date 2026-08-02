@@ -1,0 +1,50 @@
+package com.sky.service.impl;
+
+import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.entity.Category;
+import com.sky.mapper.CategoryMapper;
+import com.sky.result.PageResult;
+import com.sky.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class CategoryServiceImpl implements CategoryService {
+
+    @Autowired
+    CategoryMapper categoryMapper;
+
+    /**
+     * 查询符合条件的条目数量
+     * @param dto 该对象中包含查询条件
+     * @return
+     */
+    @Override
+    public Integer getCounts(CategoryPageQueryDTO dto) {
+        return categoryMapper.getCounts(dto);
+    }
+
+    @Override
+    public PageResult<Category> pageQuery(CategoryPageQueryDTO dto) {
+        int page = dto.getPage();
+        page = (page-1)*dto.getPageSize();
+        dto.setPage(page);
+        List<Category> list =categoryMapper.pageQuery(dto);
+        PageResult<Category> pageResult = new PageResult<Category>();
+        pageResult.setRecords(list);
+        pageResult.setTotal(getCounts(dto));
+        return pageResult;
+    }
+
+    /**
+     * 根据参数动态更新
+     * @param c  参数
+     * @return 受影响的值
+     */
+    @Override
+    public long updateCategory(Category c){
+       return categoryMapper.updateCategory(c);
+    }
+}
