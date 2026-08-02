@@ -41,4 +41,11 @@ public interface CategoryService {
      * @return true 存在，false不存在
      */
     boolean existByName(String name);
+
+    /**
+     * 删除id的分类
+     * @param id
+     * @return
+     */
+    long delete(Integer id);
 }

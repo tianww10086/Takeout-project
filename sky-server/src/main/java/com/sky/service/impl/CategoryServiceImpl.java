@@ -68,4 +68,9 @@ public class CategoryServiceImpl implements CategoryService {
        Category c = categoryMapper.getByName(name);
        return c != null;
     }
+
+    @Override
+    public long delete(Integer id) {
+        return categoryMapper.delete(id);
+    }
 }

@@ -40,4 +40,6 @@ public interface CategoryMapper {
      * @return
      */
     Category getByName(String name);
+
+    long delete(Integer id);
 }

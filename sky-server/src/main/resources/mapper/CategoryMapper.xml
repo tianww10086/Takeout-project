@@ -14,7 +14,9 @@
             </if>
         </where>
     </sql>
-
+    <delete id="delete">
+        delete from category where id =#{id}
+    </delete>
 
 
     <select id="getCounts" resultType="java.lang.Integer">
