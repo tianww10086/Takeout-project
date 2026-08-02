@@ -4,6 +4,7 @@ import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.exception.CategoryExistedException;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
@@ -64,5 +65,25 @@ public class CategoryController {
         c.setId(id);
 
         return service.updateCategory(c)>0?Result.success():Result.error("状态修改失败");
+    }
+
+    @PostMapping
+    @ApiOperation("新增分类功能")
+    public Result addCategory(@RequestBody CategoryDTO dto){
+        //根据名字查询分类，如果在数据库存在，抛出已存在异常，全局异常处理器会返回错误信息
+        if(service.existByName(dto.getName())){
+            throw new CategoryExistedException("分类:"+dto.getName()+"已存在");
+        }
+
+        Category c = new Category();
+        BeanUtils.copyProperties(dto,c);
+        c.setCreateTime(LocalDateTime.now());
+        c.setUpdateTime(LocalDateTime.now());
+        c.setStatus(0); //默认禁用
+        c.setCreateUser(BaseContext.getCurrentId());
+        c.setUpdateUser(BaseContext.getCurrentId());
+        service.addCategory(c);
+
+        return Result.success();
     }
 }

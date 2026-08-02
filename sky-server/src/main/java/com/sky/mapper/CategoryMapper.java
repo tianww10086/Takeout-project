@@ -26,4 +26,18 @@ public interface CategoryMapper {
      */
     Long updateCategory(Category c);
 
+
+    /**
+     * 新增分类
+     * @param c
+     * @return
+     */
+    long addCategory(Category c);
+
+    /**
+     * 根据分类名字查询分类
+     * @param name
+     * @return
+     */
+    Category getByName(String name);
 }

@@ -27,4 +27,18 @@ public interface CategoryService {
      * @return 受影响的值
      */
     long updateCategory(Category c);
+
+    /**
+     * 新增分类
+     * @param c
+     * @return
+     */
+    long addCategory(Category c);
+
+    /**
+     * 查询该名字是否不在数据库
+     * @param name
+     * @return true 存在，false不存在
+     */
+    boolean existByName(String name);
 }

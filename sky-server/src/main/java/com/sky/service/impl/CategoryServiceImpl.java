@@ -47,4 +47,25 @@ public class CategoryServiceImpl implements CategoryService {
     public long updateCategory(Category c){
        return categoryMapper.updateCategory(c);
     }
+
+    /**
+     * 新增分类
+     * @param c
+     * @return
+     */
+    @Override
+    public long addCategory(Category c) {
+        return categoryMapper.addCategory(c);
+    }
+
+    /**
+     * 查询名字在数据库中是否存在
+     * @param name
+     * @return
+     */
+    @Override
+    public boolean existByName(String name) {
+       Category c = categoryMapper.getByName(name);
+       return c != null;
+    }
 }
