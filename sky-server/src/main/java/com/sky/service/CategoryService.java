@@ -1,5 +1,6 @@
 package com.sky.service;
 
+import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
@@ -26,14 +27,14 @@ public interface CategoryService {
      * @param c  参数
      * @return 受影响的值
      */
-    long updateCategory(Category c);
+    long updateCategory(CategoryDTO c);
 
     /**
      * 新增分类
      * @param c
      * @return
      */
-    long addCategory(Category c);
+    long addCategory(CategoryDTO c);
 
     /**
      * 查询该名字是否不在数据库
@@ -48,4 +49,7 @@ public interface CategoryService {
      * @return
      */
     long delete(Integer id);
+
+
+    void startOrStop(Integer status,Long id);
 }

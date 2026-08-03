@@ -49,22 +49,17 @@ public class CategoryController {
     @ApiOperation("更新功能")
     public Result updateCategory(@RequestBody CategoryDTO dto){
         //新建一个对象接受参数
-        Category c = new Category();
-        BeanUtils.copyProperties(dto,c); //将前端发送的参数给c
-        c.setUpdateTime(LocalDateTime.now()); //更新时间
-        c.setUpdateUser(BaseContext.getCurrentId()); //更新id
-        return service.updateCategory(c)>0?Result.success():Result.error("更新失败");
+
+        return service.updateCategory(dto)>0?Result.success():Result.error("更新失败");
     }
 
     @PostMapping("/status/{status}")
     @ApiOperation("状态修改功能")
     public Result StartOrStop(@PathVariable Integer status,Long id){
         log.info("启用或禁用员工账户：{},{}",status,id);
-        Category c = new Category();
-        c.setStatus(status);
-        c.setId(id);
+        service.startOrStop(status,id);
 
-        return service.updateCategory(c)>0?Result.success():Result.error("状态修改失败");
+        return Result.success();
     }
 
     @PostMapping
@@ -74,15 +69,7 @@ public class CategoryController {
         if(service.existByName(dto.getName())){
             throw new CategoryExistedException("分类:"+dto.getName()+"已存在");
         }
-
-        Category c = new Category();
-        BeanUtils.copyProperties(dto,c);
-        c.setCreateTime(LocalDateTime.now());
-        c.setUpdateTime(LocalDateTime.now());
-        c.setStatus(0); //默认禁用
-        c.setCreateUser(BaseContext.getCurrentId());
-        c.setUpdateUser(BaseContext.getCurrentId());
-        service.addCategory(c);
+        service.addCategory(dto);
 
         return Result.success();
     }

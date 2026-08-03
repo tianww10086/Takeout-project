@@ -82,12 +82,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //构造Employee对象
         Employee  e = new Employee(employeeDTO);
-        String password = DigestUtils.md5DigestAsHex("123456".getBytes());
+        String password = DigestUtils.md5DigestAsHex("123456".getBytes()); //密码加密
         e.setPassword(password);
-        e.setCreateTime(LocalDateTime.now());
-        e.setUpdateTime(LocalDateTime.now());
-        e.setCreateUser(BaseContext.getCurrentId());
-        e.setUpdateUser(BaseContext.getCurrentId());
+//        e.setCreateTime(LocalDateTime.now());
+//        e.setUpdateTime(LocalDateTime.now());
+//        e.setCreateUser(BaseContext.getCurrentId());
+//        e.setUpdateUser(BaseContext.getCurrentId());
         return employeeMapper.addUEmployee(e)>0;
     }
 
@@ -120,8 +120,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 把DTO的同名属性拷贝到Employee对象里
         BeanUtils.copyProperties(dto,e);
-        e.setUpdateTime(LocalDateTime.now()); //设置修改时间
-        e.setUpdateUser(BaseContext.getCurrentId()); //设置修改者id
+//        e.setUpdateTime(LocalDateTime.now()); //设置修改时间
+//        e.setUpdateUser(BaseContext.getCurrentId()); //设置修改者id
         return employeeMapper.update(e)>0;
     }
 }
