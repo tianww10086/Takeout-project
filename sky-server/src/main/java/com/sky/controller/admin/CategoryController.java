@@ -74,7 +74,7 @@ public class CategoryController {
         return Result.success();
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     public Result deleteCategory(Integer id){
         return service.delete(id)>0?Result.success():Result.error("删除失败");
     }
