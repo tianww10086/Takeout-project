@@ -42,4 +42,11 @@ public interface CategoryMapper {
     Category getByName(String name);
 
     long delete(Integer id);
+
+    /**
+     * 根据分类类型查询 分类列表
+     * @param typeInt
+     * @return
+     */
+    List<Category> listByType(int typeInt);
 }

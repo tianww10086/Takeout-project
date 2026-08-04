@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/category")
@@ -87,8 +88,23 @@ public class CategoryController {
         return Result.success();
     }
 
+<<<<<<< Updated upstream
     @DeleteMapping()
+=======
+    @DeleteMapping
+    @ApiOperation("删除分类")
+>>>>>>> Stashed changes
     public Result deleteCategory(Integer id){
         return service.delete(id)>0?Result.success():Result.error("删除失败");
+    }
+
+    @GetMapping("/list")
+    @ApiOperation("根据类型查询分类列表")
+    public Result<List<Category>> listByType(String type){
+
+        //把type传入接口，返回分类
+        List<Category> c = service.listByTypeServe(type);
+
+        return Result.success(c);
     }
 }

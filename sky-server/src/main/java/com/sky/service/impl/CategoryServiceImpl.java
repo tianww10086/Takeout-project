@@ -73,4 +73,32 @@ public class CategoryServiceImpl implements CategoryService {
     public long delete(Integer id) {
         return categoryMapper.delete(id);
     }
+<<<<<<< Updated upstream
+=======
+
+    @Override
+    /**
+     * 启用或禁用 服务
+     */
+    public void startOrStop(Integer status,Long id){
+        Category category = Category.builder()
+                .id(id)
+                .status(status)
+                .build();
+        categoryMapper.updateCategory(category);
+    }
+
+    /**
+     * 根据分类类型查询 分类列表
+     * @param type
+     * @return
+     */
+    @Override
+    public List<Category> listByTypeServe(String type) {
+        //调用mapper层接口
+        int type_int  = Integer.parseInt(type); //转化为整型传入接口
+
+       return  categoryMapper.listByType(type_int);
+    }
+>>>>>>> Stashed changes
 }
