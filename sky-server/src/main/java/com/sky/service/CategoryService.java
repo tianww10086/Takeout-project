@@ -4,6 +4,7 @@ import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
+import com.sky.result.Result;
 
 import java.util.List;
 
@@ -52,4 +53,11 @@ public interface CategoryService {
 
 
     void startOrStop(Integer status,Long id);
+
+    /**
+     * 根据type查询分类列表
+     * @param type
+     * @return
+     */
+    List<Category> listByTypeServe(String type);
 }

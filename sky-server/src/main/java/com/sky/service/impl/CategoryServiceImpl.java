@@ -9,6 +9,7 @@ import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
+import com.sky.result.Result;
 import com.sky.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,5 +118,19 @@ public class CategoryServiceImpl implements CategoryService {
                 .status(status)
                 .build();
         categoryMapper.updateCategory(category);
+    }
+
+    /**
+     *
+     * 根据type 查询分类列表
+     * @param type
+     * @return
+     */
+    @Override
+    public List<Category> listByTypeServe(String type) {
+            //调用mapper层接口
+        int IType = Integer.parseInt(type);
+
+        return  categoryMapper.listByType(IType);
     }
 }

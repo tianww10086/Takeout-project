@@ -46,4 +46,6 @@ public interface CategoryMapper {
     Category getByName(String name);
 
     long delete(Integer id);
+
+    List<Category> listByType(int iType);
 }

@@ -18,11 +18,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/category")
 @Slf4j
-@Api("分类管理相关接口")
+@Api( tags="分类管理相关接口")
 public class CategoryController {
     @Autowired
     CategoryService service;
@@ -75,7 +76,21 @@ public class CategoryController {
     }
 
     @DeleteMapping
+    @ApiOperation("删除功能")
     public Result deleteCategory(Integer id){
         return service.delete(id)>0?Result.success():Result.error("删除失败");
     }
+
+    /**
+     *  根据type返回分类列表
+     * @param type
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("根据type返回分类列表")
+    public Result<List<Category>> listByType(String type){
+
+        return Result.success(service.listByTypeServe(type));
+    }
+
 }
