@@ -29,6 +29,14 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 捕获运行时异常
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public Result runTimeExceptionHandler(RuntimeException ex){
+        log.error("异常信息：{}", ex.getMessage());
+        return Result.error(ex.getMessage());
+    }
+    /**
      * 捕获sql异常
      * @param e 表示 SQL 语句由于违反数据库完整性约束而失败。
      * @return 返回错误信息

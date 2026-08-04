@@ -1,6 +1,7 @@
 package com.sky.service;
 
 
+import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.vo.DishPageVO;
@@ -18,4 +19,10 @@ public interface DishService {
      * @return
      */
      long getCounts(DishPageQueryDTO dishPageQueryDTO);
+
+    /**
+     * 新增菜品 ，保存菜品的同时要保存对应的口味
+     * @param dto
+     */
+     public void saveWithFlavor(DishDTO dto);
 }

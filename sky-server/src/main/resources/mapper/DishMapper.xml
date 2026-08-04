@@ -21,7 +21,8 @@
         </where>
     </sql>
 
-<!--    分页查询-->
+
+    <!--    分页查询-->
     <select id="pageQuery" resultType="DishPageVO">
         select dish.id,
                dish.name,
@@ -43,6 +44,7 @@
                 and dish.status = #{status}
             </if>
         </where>
+        order by dish.name
         limit #{page},#{pageSize}
     </select>
 
@@ -53,5 +55,17 @@
         <include refid="dishQueryCondition"/>
     </select>
 
+<!--    根据名字查询菜品是否存在-->
+    <select id="existDish" resultType="com.sky.entity.Dish">
+        select * from dish  where name = #{name};
+    </select>
+
+
+    <!--    插入菜品 开启主键回填到对象中，keyProperty指定d实体类中对应的主键名-->
+    <insert id="insert" parameterType="dish" useGeneratedKeys="true" keyProperty="id">
+        insert into dish(name, category_id, price, image, description, create_time, update_time, create_user, update_user)
+        values(#{name},#{categoryId},#{price},#{image},#{description},#{createTime},#{updateTime},#{createUser},#{updateUser})
+
+    </insert>
 
 </mapper>

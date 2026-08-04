@@ -14,10 +14,12 @@ import com.sky.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -55,6 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return 受影响的值
      */
     @Override
+    @Transactional
     public long updateCategory(CategoryDTO c){
         Category category = new Category();
         BeanUtils.copyProperties(c,category);
@@ -69,6 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
+    @Transactional
     public long addCategory(CategoryDTO c) {
         Category category= new Category();
         BeanUtils.copyProperties(c,category);
@@ -93,6 +97,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
+    @Transactional
     public long delete(Integer id) {
         long count = dishMapper.countByCategoryId(id);
         if(count>0){

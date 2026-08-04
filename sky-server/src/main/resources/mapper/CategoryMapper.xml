@@ -43,12 +43,7 @@
         type = #{type}
     </select>
 
-<!--    根据类型查询分类列表-->
-    <select id="listByType" resultType="com.sky.entity.Category">
-        select * from category
-        where
-        type = #{type}
-    </select>
+
 
 
     <update id="updateCategory" parameterType="Category">
