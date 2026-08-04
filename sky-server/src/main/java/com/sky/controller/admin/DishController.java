@@ -11,6 +11,7 @@ import com.sky.vo.DishPageVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -45,13 +46,32 @@ public class DishController {
         return Result.success(pageResult);
     }
 
+    /**
+     * 添加菜品接口
+     * @param dto
+     * @return
+     */
     @PostMapping
     @ApiOperation("添加菜品")
+
     public Result save(@RequestBody DishDTO dto){
 
         log.info("新增菜品：{}",dto);
-        //添加菜品分为两步，第一步，将菜品的属性添加到菜品表里
+
         service.saveWithFlavor(dto);
+        return Result.success();
+    }
+
+    /**
+     * 删除菜品接口
+     */
+    @DeleteMapping
+    @ApiOperation("删除菜品")
+    public Result delete(String ids){
+        log.info("删除菜品（id：{}）",ids);
+        if(ids.isEmpty())
+            throw new RuntimeException("id为空");
+        service.deleteWithFlavor(ids);
         return Result.success();
     }
 }

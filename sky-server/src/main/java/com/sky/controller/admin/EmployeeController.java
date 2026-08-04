@@ -57,8 +57,8 @@ public class EmployeeController {
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
         String token = JwtUtil.createJWT(
                 jwtProperties.getAdminSecretKey(), // 读取jwt配置类的密钥信息，并设置
-                jwtProperties.getAdminTtl(), // 改JWT令牌声明周期
-                claims); //载荷
+                jwtProperties.getAdminTtl(), // 该JWT令牌声明周期
+                claims); //载荷 员工id
 
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
                 .id(employee.getId())

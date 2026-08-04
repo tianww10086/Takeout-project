@@ -11,4 +11,13 @@
             (#{df.dishId},#{df.name},#{df.value})
         </foreach>
     </insert>
+
+<!--    根据id批量删除-->
+    <delete id="deleteListById">
+        delete from dish_flavor
+        where id in
+        <foreach collection="ids" item = "id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

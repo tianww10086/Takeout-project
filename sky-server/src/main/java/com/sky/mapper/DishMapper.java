@@ -5,6 +5,7 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.DishPageVO;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -49,4 +50,7 @@ public interface DishMapper
      * @return
      */
     Dish existDish(String name);
+
+
+    void deleteListById(List<Integer> ids);
 }

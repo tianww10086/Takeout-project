@@ -5,6 +5,7 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.vo.DishPageVO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,4 +26,12 @@ public interface DishService {
      * @param dto
      */
      public void saveWithFlavor(DishDTO dto);
+
+
+    /**
+     * 批量删除菜品功能
+     * @param ids
+     */
+    @Transactional
+    void deleteWithFlavor(String ids);
 }

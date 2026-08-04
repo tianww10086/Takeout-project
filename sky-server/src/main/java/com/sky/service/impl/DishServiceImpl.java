@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.stream.events.DTD;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,6 +29,8 @@ public class DishServiceImpl implements DishService {
     //自动注入Flavor数据库接口
     @Autowired
     DishFlavorMapper flavorMapper;
+    @Autowired
+    private DishFlavorMapper dishFlavorMapper;
 
 
     @Override
@@ -80,5 +82,27 @@ public class DishServiceImpl implements DishService {
       //  传入列表全部插入
         flavorMapper.insertBatch(flavors);
         log.info("{}插入完成", dish.getName());
+    }
+
+    /**
+     *  根据id 批量删除菜品和 口味
+     * @param ids 1,2,3 根据,分隔
+     */
+    @Transactional
+    @Override
+    public void deleteWithFlavor(String ids) {
+        if(ids ==null || ids.trim().isEmpty())
+            throw new RuntimeException("不存在id,参数错误");
+        String []idArray = ids.split(",");
+        List<Integer> idList = new ArrayList<>();
+        for(String idA :idArray){
+            int id = Integer.parseInt(idA.trim());
+            //将id转化为整型处理
+            idList.add(id);
+
+        }
+        dishMapper.deleteListById(idList);
+        //删除口味
+        dishFlavorMapper.deleteListById(idList);
     }
 }
