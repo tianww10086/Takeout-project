@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--命名空间指定接口：全限定名-->
+<mapper namespace="com.sky.mapper.DishMapper">
+
+<!--    定义sql-->
+    <sql id="dishQueryCondition" >
+        <where>
+            <if test="name!=null and name!='' ">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="status!=null">
+                and status = #{status}
+            </if>
+            <if test="categoryId!=null">
+                and categoryId = #{categoryId}
+            </if>
+
+        </where>
+    </sql>
+
+<!--    分页查询-->
+    <select id="pageQuery" resultType="DishPageVO">
+        select dish.id,
+               dish.name,
+               dish.category_id,
+               dish.image,
+               dish.description,
+               dish.price,
+               dish.status,
+               dish.update_time,
+               c.name as categoryName
+        from dish
+        LEFT JOIN category as c
+        on dish.category_id = c.id
+        <where>
+            <if test="name!=null and name!='' ">
+                dish.name like concat('%',#{name},'%')
+            </if>
+            <if test="status!=null">
+                and dish.status = #{status}
+            </if>
+        </where>
+        limit #{page},#{pageSize}
+    </select>
+
+
+<!--    分页查询：查询总条目数-->
+    <select id="getCounts" resultType="java.lang.Long">
+        select count(0) from dish
+        <include refid="dishQueryCondition"/>
+    </select>
+
+
+</mapper>

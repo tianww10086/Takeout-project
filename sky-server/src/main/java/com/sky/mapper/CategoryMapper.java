@@ -1,8 +1,10 @@
 package com.sky.mapper;
 
+import com.sky.annotation.AutoFill;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -24,6 +26,7 @@ public interface CategoryMapper {
     /**
      * 修改数据 ,根据主键id动态更新
      */
+    @AutoFill(OperationType.UPDATE)
     Long updateCategory(Category c);
 
 
@@ -32,6 +35,7 @@ public interface CategoryMapper {
      * @param c
      * @return
      */
+    @AutoFill(OperationType.INSERT)
     long addCategory(Category c);
 
     /**
@@ -43,10 +47,5 @@ public interface CategoryMapper {
 
     long delete(Integer id);
 
-    /**
-     * 根据分类类型查询 分类列表
-     * @param typeInt
-     * @return
-     */
-    List<Category> listByType(int typeInt);
+    List<Category> listByType(int iType);
 }

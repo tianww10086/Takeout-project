@@ -1,6 +1,7 @@
 package com.sky.service.impl;
 
 import com.sky.constant.MessageConstant;
+import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.exception.DeletionNotAllowedException;
@@ -8,7 +9,9 @@ import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
+import com.sky.result.Result;
 import com.sky.service.CategoryService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +55,12 @@ public class CategoryServiceImpl implements CategoryService {
      * @return 受影响的值
      */
     @Override
-    public long updateCategory(Category c){
-       return categoryMapper.updateCategory(c);
+    public long updateCategory(CategoryDTO c){
+        Category category = new Category();
+        BeanUtils.copyProperties(c,category);
+
+       return categoryMapper.updateCategory(category);
+
     }
 
     /**
@@ -62,8 +69,11 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public long addCategory(Category c) {
-        return categoryMapper.addCategory(c);
+    public long addCategory(CategoryDTO c) {
+        Category category= new Category();
+        BeanUtils.copyProperties(c,category);
+        category.setStatus(0); //默认状态禁用：0
+        return categoryMapper.addCategory(category);
     }
 
     /**
@@ -77,6 +87,11 @@ public class CategoryServiceImpl implements CategoryService {
        return c != null;
     }
 
+    /**
+     * 删除分类
+     * @param id
+     * @return
+     */
     @Override
     public long delete(Integer id) {
         long count = dishMapper.countByCategoryId(id);
@@ -95,7 +110,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     /**
-     * 启用或禁用 服务
+     * 启用或禁用
      */
     public void startOrStop(Integer status,Long id){
         Category category = Category.builder()
@@ -106,16 +121,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     /**
-     * 根据分类类型查询 分类列表
+     *
+     * 根据type 查询分类列表
      * @param type
      * @return
      */
     @Override
     public List<Category> listByTypeServe(String type) {
-        //调用mapper层接口
-        int type_int  = Integer.parseInt(type); //转化为整型传入接口
+            //调用mapper层接口
+        int IType = Integer.parseInt(type);
 
-       return  categoryMapper.listByType(type_int);
+        return  categoryMapper.listByType(IType);
     }
-
 }

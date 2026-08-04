@@ -1,8 +1,10 @@
 package com.sky.service;
 
+import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.result.PageResult;
+import com.sky.result.Result;
 
 import java.util.List;
 
@@ -26,14 +28,14 @@ public interface CategoryService {
      * @param c  参数
      * @return 受影响的值
      */
-    long updateCategory(Category c);
+    long updateCategory(CategoryDTO c);
 
     /**
      * 新增分类
      * @param c
      * @return
      */
-    long addCategory(Category c);
+    long addCategory(CategoryDTO c);
 
     /**
      * 查询该名字是否不在数据库
@@ -50,17 +52,12 @@ public interface CategoryService {
     long delete(Integer id);
 
 
-    /**
-     *  启用或禁用接口
-     * @param status
-     * @param id
-     */
     void startOrStop(Integer status,Long id);
+
     /**
-     * 根据分类类型 查询分类列表
+     * 根据type查询分类列表
      * @param type
      * @return
      */
     List<Category> listByTypeServe(String type);
-
 }
