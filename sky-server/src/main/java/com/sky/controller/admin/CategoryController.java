@@ -88,12 +88,9 @@ public class CategoryController {
         return Result.success();
     }
 
-<<<<<<< Updated upstream
     @DeleteMapping()
-=======
-    @DeleteMapping
     @ApiOperation("删除分类")
->>>>>>> Stashed changes
+
     public Result deleteCategory(Integer id){
         return service.delete(id)>0?Result.success():Result.error("删除失败");
     }

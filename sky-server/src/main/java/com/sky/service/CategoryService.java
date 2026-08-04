@@ -48,8 +48,7 @@ public interface CategoryService {
      * @return
      */
     long delete(Integer id);
-<<<<<<< Updated upstream
-=======
+
 
     /**
      *  启用或禁用接口
@@ -57,12 +56,11 @@ public interface CategoryService {
      * @param id
      */
     void startOrStop(Integer status,Long id);
-
     /**
      * 根据分类类型 查询分类列表
      * @param type
      * @return
      */
     List<Category> listByTypeServe(String type);
->>>>>>> Stashed changes
+
 }

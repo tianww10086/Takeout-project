@@ -92,8 +92,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryMapper.delete(id);
     }
-<<<<<<< Updated upstream
-=======
 
     @Override
     /**
@@ -119,5 +117,5 @@ public class CategoryServiceImpl implements CategoryService {
 
        return  categoryMapper.listByType(type_int);
     }
->>>>>>> Stashed changes
+
 }
