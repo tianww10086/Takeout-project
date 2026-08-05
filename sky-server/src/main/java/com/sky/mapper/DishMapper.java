@@ -51,6 +51,26 @@ public interface DishMapper
      */
     Dish existDish(String name);
 
-
+    /**
+     * 批量删除菜品
+     * @param ids
+     */
     void deleteListById(List<Integer> ids);
+
+
+    /**
+     * 修改菜品
+     */
+    @AutoFill(OperationType.UPDATE)
+    void update(Dish dish);
+
+    @Select("""
+    select * from dish where id =#{id}
+    """)
+    Dish findById(Long id);
+
+    @Select("""
+    select * from dish where category_id = #{id}
+    """)
+    List<Dish> selectBatchId(long id);
 }

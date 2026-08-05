@@ -9,6 +9,7 @@ import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.service.DishService;
 import com.sky.vo.DishPageVO;
+import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,8 +102,87 @@ public class DishServiceImpl implements DishService {
             idList.add(id);
 
         }
+        //根据菜品id列表删除菜品
         dishMapper.deleteListById(idList);
-        //删除口味
+        //根据菜品id列表删除口味
         dishFlavorMapper.deleteListById(idList);
+    }
+
+    /**
+     * 修改菜品服务：在修改菜品之后，要把口味表中对应的口味表删除，
+     * 再通过前端传入的口味列表插入到口味表中
+     * @param dish
+     */
+    @Override
+    @Transactional
+    public void updateWithFlavor(DishDTO dish) {
+        Dish dish1 = new Dish();
+        BeanUtils.copyProperties(dish,dish1); //复制属性
+        long dish_id = dish1.getId(); //获取菜品id
+        //先修改dish表，再修改口味表
+        dishMapper.update(dish1);
+
+        //先删除原先所有的口味
+        dishFlavorMapper.deleteByDishId(dish_id);
+
+        // 获取口味列表
+        List<DishFlavor> flavors = dish.getFlavors();
+
+        if(flavors!=null && !flavors.isEmpty()){
+            for(DishFlavor flavor :flavors){
+                flavor.setDishId(dish_id); //设置对应的id;
+            }
+            dishFlavorMapper.insertBatch(flavors);
+        }
+
+
+
+    }
+
+    /**
+     * 根据id查询菜品
+     * @param id
+     * @return
+     */
+    @Override
+    public DishVO findByIdWithFlavor(Long id) {
+        Dish dish =  dishMapper.findById(id); //查询出菜品
+
+        List<DishFlavor> flavors = dishFlavorMapper.findByDishId(id); //查询出口味
+
+        if(dish==null || flavors==null)
+            throw new RuntimeException("菜品查询失败");
+
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish,dishVO); //将菜品传入VO
+        dishVO.setFlavors(flavors); //将口味传入VO
+        return dishVO;
+    }
+
+    /**
+     * 根据菜品id修改菜品状态
+     * @param status
+     * @param id
+     */
+    @Override
+    public void updateWithStatus(Integer status, Long id) {
+        if(id == null || status ==null)
+            throw new IllegalArgumentException("非法参数异常");
+        Dish dish = new Dish();
+        dish.setId(id);
+        dish.setStatus(status);
+        dishMapper.update(dish);
+    }
+
+    /**
+     *  根据分类id查询菜品列表
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Dish> listFindById(String categoryId) {
+        long id = Long.parseLong(categoryId); //转化为long型
+
+        return  dishMapper.selectBatchId(id);
     }
 }

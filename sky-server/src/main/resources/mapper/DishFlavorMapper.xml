@@ -12,12 +12,24 @@
         </foreach>
     </insert>
 
-<!--    根据id批量删除-->
+<!--    根据dish_id批量删除-->
     <delete id="deleteListById">
         delete from dish_flavor
-        where id in
+        where dish_id in
         <foreach collection="ids" item = "id" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
+
+<!--    删除指定dish_id的口味-->
+    <delete id="deleteByDishId">
+        delete from dish_flavor
+        where dish_id = #{id}
+    </delete>
+
+<!--    根据菜品id查询口味-->
+    <select id="findByDishId" resultType="com.sky.entity.DishFlavor">
+        select * from dish_flavor
+        where dish_id = #{id};
+    </select>
 </mapper>

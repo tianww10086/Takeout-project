@@ -5,6 +5,7 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.vo.DishPageVO;
+import com.sky.vo.DishVO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,4 +35,24 @@ public interface DishService {
      */
     @Transactional
     void deleteWithFlavor(String ids);
+
+    /**
+     *
+     * 修改菜品
+     * @param dish
+     */
+    @Transactional
+    void updateWithFlavor(DishDTO dish);
+
+    /**
+     * 根据id查询出前菜品及口味
+     * @param id
+     * @return
+     */
+    DishVO findByIdWithFlavor(Long id);
+
+
+    void updateWithStatus(Integer status, Long id);
+
+    List<Dish> listFindById(String categoryId);
 }
