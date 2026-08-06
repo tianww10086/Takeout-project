@@ -37,6 +37,8 @@
         select * from category
         where name = #{name}
     </select>
+
+<!--    根据分类类型查询分类-->
     <select id="listByType" resultType="com.sky.entity.Category">
         select * from category
         where

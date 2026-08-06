@@ -42,6 +42,7 @@ public class AutoFillAspect {
         //获得被拦截方法的参数
         Object[] args = jp.getArgs();
 
+        //方法上的实体类
         Object entity = args[0]; //获取实体类，约定这些操作的第一个参数是实体类
 
         //准备赋值的数据
@@ -49,7 +50,7 @@ public class AutoFillAspect {
         long currentId = BaseContext.getCurrentId();
 
         //通过反射调用方法
-        Method setCreateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class);//通过反射获取方法
+        var setCreateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class);//通过反射获取方法
         var setCreateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class);
         var setUpdateTime = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME,LocalDateTime.class);
         var setUpdateUser = entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER,Long.class);

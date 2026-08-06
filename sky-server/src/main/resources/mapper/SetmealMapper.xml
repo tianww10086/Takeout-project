@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sky.mapper.SetmealMapper">
+
+<!--    插入套餐-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into
+        setmeal(category_id, name, price, description, image, create_time, update_time, create_user, update_user)
+        VALUES(#{categoryId},#{name},#{price},#{description},#{image},#{createTime},#{updateTime},#{createUser},#{updateUser})
+    </insert>
+
+<!--    更新套餐/-->
+    <update id="update">
+        update setmeal
+        <set>
+            <if test="categoryId!=null">
+                categroy_id = #{categoryId},
+            </if>
+            <if test="name!=null and name!='' ">
+                name = #{name}
+            </if>
+            <if test="price!=null">
+                price = #{price}
+            </if>
+            <if test="description!=null and description!='' ">
+                description = #{description}
+            </if>
+            <if test="image!=null and image!='' ">
+                image = #{image}
+            </if>
+            <if test="status!=null">
+                status =#{status},
+            </if>
+            <if test="updateTime!=null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser!=null">
+                update_user = #{updateUser}
+            </if>
+        </set>
+
+        where id =#{id}
+    </update>
+
+<!--    批量删除菜品-->
+    <delete id="deleteBatch">
+        delete from setmeal
+        where id in
+        <foreach collection="idList" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="page"  resultType="setmeal">
+        select * from setmeal
+        <where>
+            <if test="categoryId!=null">
+                category_id = #{categoryId}
+            </if>
+            <if test="name !=null and name!='' ">
+                name = #{name}
+            </if>
+            <if test="status!=null">
+                status = #{status}
+            </if>
+        </where>
+        limit #{page},#{pageSize}
+    </select>
+
+    <select id="count" resultType="long">
+        select count(0) from setmeal
+        <where>
+            <if test="categoryId!=null">
+                category_id = #{categoryId}
+            </if>
+            <if test="name !=null and name!='' ">
+                name = #{name}
+            </if>
+            <if test="status!=null">
+                status = #{status}
+            </if>
+        </where>
+    </select>
+</mapper>
