@@ -6,6 +6,7 @@ import com.sky.entity.Setmeal;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
+import com.sky.vo.SetmealPageVO;
 import com.sky.vo.SetmealVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,8 +60,10 @@ public class SetmealController {
      */
     @GetMapping("/page")
     @ApiOperation("分页查询功能")
-    public PageResult<Setmeal> pageQuery( SetmealPageQueryDTO dto){
-        return service.pageQuery(dto);
+    public Result<PageResult<SetmealPageVO>> pageQuery(SetmealPageQueryDTO dto){
+        PageResult<SetmealPageVO> pageResult = service.pageQuery(dto);
+
+        return Result.success(pageResult);   // ← 包上 Result
     }
 
 

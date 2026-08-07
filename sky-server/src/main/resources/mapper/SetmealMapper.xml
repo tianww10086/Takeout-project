@@ -16,19 +16,19 @@
         update setmeal
         <set>
             <if test="categoryId!=null">
-                categroy_id = #{categoryId},
+                category_id = #{categoryId},
             </if>
             <if test="name!=null and name!='' ">
-                name = #{name}
+                name = #{name},
             </if>
             <if test="price!=null">
-                price = #{price}
+                price = #{price},
             </if>
             <if test="description!=null and description!='' ">
-                description = #{description}
+                description = #{description},
             </if>
             <if test="image!=null and image!='' ">
-                image = #{image}
+                image = #{image},
             </if>
             <if test="status!=null">
                 status =#{status},
@@ -53,17 +53,19 @@
         </foreach>
     </delete>
 
-    <select id="page"  resultType="setmeal">
-        select * from setmeal
+<!--    分页查询-->
+    <select id="page"  resultType="SetmealPageVO">
+        select *,category.name as category_name from setmeal
+        left join category on setmeal.category_id = category.id
         <where>
             <if test="categoryId!=null">
                 category_id = #{categoryId}
             </if>
             <if test="name !=null and name!='' ">
-                name = #{name}
+               and name = #{name}
             </if>
             <if test="status!=null">
-                status = #{status}
+               and status = #{status}
             </if>
         </where>
         limit #{page},#{pageSize}
@@ -76,10 +78,10 @@
                 category_id = #{categoryId}
             </if>
             <if test="name !=null and name!='' ">
-                name = #{name}
+               and  name = #{name}
             </if>
             <if test="status!=null">
-                status = #{status}
+              and  status = #{status}
             </if>
         </where>
     </select>

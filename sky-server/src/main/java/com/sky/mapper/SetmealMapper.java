@@ -5,6 +5,7 @@ import com.sky.annotation.AutoFill;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.enumeration.OperationType;
+import com.sky.vo.SetmealPageVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -33,7 +34,7 @@ public interface SetmealMapper {
     """)
     Setmeal select(Integer id);
 
-    List<Setmeal> page(SetmealPageQueryDTO setmeal);
+    List<SetmealPageVO> page(SetmealPageQueryDTO setmeal);
 
 
     Long count(Setmeal setmeal);

@@ -9,6 +9,7 @@ import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetmealService;
+import com.sky.vo.SetmealPageVO;
 import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.BeanUtils;
@@ -113,7 +114,7 @@ public class SetmealServiceImpl implements SetmealService {
      * @return
      */
     @Override
-    public PageResult<Setmeal> pageQuery(SetmealPageQueryDTO dto) {
+    public PageResult<SetmealPageVO> pageQuery(SetmealPageQueryDTO dto) {
         if(dto==null)
             throw new RuntimeException("dto为空");
         int page_index = dto.getPage();
@@ -121,11 +122,13 @@ public class SetmealServiceImpl implements SetmealService {
         dto.setPage(page_index);
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(dto,setmeal);
-        List<Setmeal> list =  setmealMapper.page(dto);
+        //分页查询
+        List<SetmealPageVO> list =  setmealMapper.page(dto);
+
 
         long counts = setmealMapper.count(setmeal);
 
-        PageResult<Setmeal> pages = new PageResult<>();
+        PageResult<SetmealPageVO> pages = new PageResult<>();
         pages.setTotal(counts);
         pages.setRecords(list);
 
