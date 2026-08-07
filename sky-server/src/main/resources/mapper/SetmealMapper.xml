@@ -85,4 +85,36 @@
             </if>
         </where>
     </select>
+
+    <select id="list" resultType="com.sky.entity.Setmeal">
+        select * from setmeal
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+<!--   根据id查询菜品选项-->
+    <select id="getDishItemBySetmealId" resultType="com.sky.vo.DishItemVO">
+        -- 根据套餐id查询出 菜品名称 份数  菜品图片 菜品描述
+        select sd.name as name
+             ,sd.copies as copies
+             ,d.image as image
+             ,d.description
+        from
+            setmeal_dish as sd left join dish d
+        on sd.dish_id = d.id
+        where sd.setmeal_id = #{setmealId};
+
+    </select>
 </mapper>

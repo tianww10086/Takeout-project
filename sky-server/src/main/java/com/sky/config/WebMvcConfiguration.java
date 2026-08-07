@@ -2,6 +2,7 @@ package com.sky.config;
 
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.sky.interceptor.JwtTokenAdminInterceptor;
+import com.sky.interceptor.JwtTokenUserInterceptor;
 import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,13 @@ import java.util.List;
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
+    //管理端jwt校验拦截器
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
+    //用户端jwt校验拦截器
+    @Autowired
+    private JwtTokenUserInterceptor jwtTokenUserInterceptor;
     /**
      * 注册自定义拦截器
      *
@@ -47,6 +52,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**") //拦截admin下的所有请求
                 .excludePathPatterns("/admin/employee/login"); // login请求除外
+        registry .addInterceptor(jwtTokenUserInterceptor)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/user/login")
+                .excludePathPatterns("/user/shop/status");
     }
 
     /**

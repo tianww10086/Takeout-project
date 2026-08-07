@@ -47,5 +47,10 @@ public interface CategoryMapper {
 
     long delete(Integer id);
 
-    List<Category> listByType(int iType);
+    List<Category> listByType(int type);
+
+    @Select("""
+    select * from category;
+    """)
+    List<Category> listAll();
 }
