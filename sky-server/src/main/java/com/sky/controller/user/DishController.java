@@ -33,6 +33,7 @@ public class DishController {
      */
     @GetMapping("/list")
     @ApiOperation("根据分类id查询菜品")
+
     public Result<List<DishVO>> list(Long categoryId) {
 
         //构造redis的key 名： dish_{id}
