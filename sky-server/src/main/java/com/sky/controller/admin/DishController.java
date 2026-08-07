@@ -15,10 +15,12 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/admin/dish")
@@ -31,6 +33,8 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
+    @Autowired
+    private RedisTemplate template;
     /**
      * 分页查询
      * @param dishPageQueryDTO
@@ -58,7 +62,9 @@ public class DishController {
     @PostMapping
     @ApiOperation("添加菜品")
     public Result save(@RequestBody DishDTO dto){
-
+        //清理缓存数据
+        String key = "dish_"+dto.getCategoryId();
+        template.delete(key); //清除与这个菜品分类相同的缓存
         log.info("新增菜品：{}",dto);
 
         service.saveWithFlavor(dto);
@@ -75,6 +81,8 @@ public class DishController {
         if(ids.isEmpty())
             throw new RuntimeException("id为空");
         service.deleteWithFlavor(ids);
+
+        ClearCache("dish_*");
         return Result.success();
     }
 
@@ -89,6 +97,8 @@ public class DishController {
         log.info("修改菜品:{}",dish);
 
         service.updateWithFlavor(dish);
+
+        ClearCache("dish_   *");
 
         return Result.success();
     }
@@ -115,6 +125,9 @@ public class DishController {
     public Result OnOff(@PathVariable Integer status,Long id){
         log.info("修改菜品id为{} 的状态为{}",id,status);
         service.updateWithStatus(status,id);
+
+        ClearCache("dish_*");
+
         return Result.success();
     }
 
@@ -129,5 +142,15 @@ public class DishController {
        List<Dish> dishes =   service.listFindById(categoryId);
 
        return Result.success(dishes);
+    }
+
+    /**
+     * 清理redis缓存
+     */
+
+    private void ClearCache(String pattern){
+        //将所有的菜品缓存数据删除掉
+        Set keys = template.keys(pattern);
+        template.delete(keys);
     }
 }
