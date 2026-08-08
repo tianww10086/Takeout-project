@@ -5,6 +5,7 @@ import com.sky.dto.ShoppingCartDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.ShoppingCart;
+import com.sky.exception.ParamEmptyException;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.ShoppingCartMapper;
@@ -104,5 +105,48 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         //删除当前用户的购物车数据
         Long currentUserId = BaseContext.getCurrentId();
         shoppingCartMapper.deleteByUserId(currentUserId);
+    }
+
+    /**
+     * 删除其中一个商品
+     * @param dto
+     */
+    @Override
+    public void delete(ShoppingCartDTO dto) {
+        //查询该商品在数据库中的数量
+
+        //先获取购物车的一条商品
+        ShoppingCart cart = new ShoppingCart();
+        BeanUtils.copyProperties(dto,cart);
+
+        Long userId = BaseContext.getCurrentId();
+        if(userId==null){
+            throw new ParamEmptyException("用户未登录");
+        }
+
+        //菜品id和套餐id至少要一个，不能同时为空
+        if(cart.getDishId()==null && cart.getSetmealId()==null)
+            throw new ParamEmptyException("菜品id和套餐id不能同时为空");
+
+
+        cart.setUserId(userId); //设置用户id
+
+        List<ShoppingCart> list =  shoppingCartMapper.list(cart);
+
+        cart = list.get(0); //获取这条条目对象
+        if(cart==null)
+            throw new RuntimeException("该商品不在购物车");
+        int number = cart.getNumber() == null ? 0 : cart.getNumber(); //获取数据库的number
+
+        if(number>1){
+            //如果数量大于1 ，更新商品数量-1即可
+            cart.setNumber(number-1);
+            //更新
+            shoppingCartMapper.updateNumberById(cart);
+        }else{
+            //如果小于等于1，则执行删除操作
+            shoppingCartMapper.delete(cart);
+
+        }
     }
 }

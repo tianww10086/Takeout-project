@@ -16,4 +16,7 @@ public interface ShoppingCartService {
     List<ShoppingCart> showShoppingCart();
 
     void cleaShoppingCart();
+
+    //根据条件dto删除
+    void delete(ShoppingCartDTO dto);
 }

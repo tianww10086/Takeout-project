@@ -30,4 +30,12 @@ public interface ShoppingCartMapper {
     delete from shopping_cart where user_id = #{currentUserId}
     """)
     void deleteByUserId(Long currentUserId);
+
+
+    /**
+     * 根据动态条件删除条目
+     * @param cart
+     */
+
+    void delete(ShoppingCart cart);
 }
