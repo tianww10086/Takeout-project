@@ -8,6 +8,7 @@ import com.sky.vo.OrderPageVO;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import org.springframework.core.annotation.Order;
 
 public interface OrderService {
     /**
@@ -25,11 +26,11 @@ public interface OrderService {
     OrderPaymentVO pay(OrdersPaymentDTO dto);
 
     /**
-     * 查询历史订单
+     * 查询用户历史订单
      * @param dto
      * @return
      */
-    PageResult<OrderPageVO> pageQuery(OrdersPageQueryDTO dto);
+    PageResult<OrderPageVO> findHistoryOrder(OrdersPageQueryDTO dto);
 
     /**
      * 查询订单详情接口
@@ -49,4 +50,11 @@ public interface OrderService {
      * @param id
      */
     void againOrder(Long id);
+
+    /**
+     * 根据条件查询订单
+     * @param condition
+     * @return
+     */
+    PageResult<OrderVO> pageQuery(OrdersPageQueryDTO condition);
 }

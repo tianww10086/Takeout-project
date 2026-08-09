@@ -29,4 +29,10 @@ public interface OrderDetailMapper
      List<OrderDetail> select(Orders order);
 
 
+     /**
+      * 根据订单id集合查询订单明细
+      * @param ids
+      * @return
+      */
+     List<OrderDetail> selectByOrderIds(List<Long> ids);
 }

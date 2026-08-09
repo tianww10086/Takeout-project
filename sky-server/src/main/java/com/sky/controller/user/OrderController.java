@@ -62,7 +62,7 @@ public class OrderController {
     public Result<PageResult<OrderPageVO>> ordersQuery(OrdersPageQueryDTO dto) {
         if (dto == null)
             throw new OrderBusinessException("非法参数");
-        PageResult<OrderPageVO> pages = service.pageQuery(dto);
+        PageResult<OrderPageVO> pages = service.findHistoryOrder(dto);
 
 
         return Result.success(pages);

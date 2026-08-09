@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderPageVO extends Orders {
     //订单详细列表
-
     private List<OrderDetail> orderDetailList;
 
 }

@@ -36,7 +36,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -192,7 +194,7 @@ public class OrderServiceImpl implements OrderService {
      *
      * @return
      */
-    public PageResult<OrderPageVO> pageQuery(OrdersPageQueryDTO dto) {
+    public PageResult<OrderPageVO> findHistoryOrder(OrdersPageQueryDTO dto) {
 
 
         PageResult<OrderPageVO> resultVo = new PageResult<>(); //返回对象
@@ -343,4 +345,92 @@ public class OrderServiceImpl implements OrderService {
             shoppingCartMapper.insert(cart);
         }
     }
+
+    /**
+     * 根据条件查询订单 时间复杂度log(n^2)
+     * @param condition
+     * @return
+     */
+
+    //TODO 待优化
+    @Override
+    public PageResult<OrderVO> pageQuery(OrdersPageQueryDTO condition) {
+
+        //分页查询
+        PageHelper.startPage(condition.getPage(),condition.getPageSize());
+        Page<Orders> page = orderMapper.getPage(condition);
+        List<OrderVO> vos  = new ArrayList<>();
+
+        //根据查询出来的订单对象构造vo列表
+        List<Orders> orders = page.getResult();
+        //空结果提取返回
+        if(orders==null ||orders.isEmpty())
+            return new PageResult<>(page.getTotal(),vos);
+
+        for(Orders o:orders){
+            //根据用户id查询地址填入对象
+            AddressBook address = addressBookMapper.getByUserId(o.getUserId()); //可优化对象
+            o.setAddress(address.toString());
+            StringBuilder orderDishes = new StringBuilder(); //菜品字符串构造器
+            OrderVO vo = new OrderVO();
+            BeanUtils.copyProperties(o,vo); //复制查询出来的属性
+
+            //根据订单查询对应菜品信息
+            List<OrderDetail> detailList = orderDetailMapper.select(o); //多次数据库连接
+            for(OrderDetail d:detailList){
+                orderDishes.append(d.getName()+"x"+d.getNumber()+",");
+            }
+            vo.setOrderDishes(orderDishes.toString()); //设置菜品名
+            vos.add(vo);
+        }
+
+        PageResult<OrderVO> result = new PageResult<>();
+        result.setTotal(page.getTotal());
+        result.setRecords(vos);
+        return result;
+    }
 }
+
+
+/**
+ * 优化版
+ * @Override
+ * public PageResult<OrderVO> pageQuery(OrdersPageQueryDTO condition) {
+ *     PageHelper.startPage(condition.getPage(), condition.getPageSize());
+ *     Page<Orders> page = orderMapper.getPage(condition);
+ *     List<Orders> orders = page.getResult();
+ *
+ *     List<OrderVO> vos = new ArrayList<>();
+ *
+ *     // 空结果提前返回（避免下面查空 IN 列表）
+ *     if (orders == null || orders.isEmpty()) {
+ *         return new PageResult<>(page.getTotal(), vos);
+ *     }
+ *
+ *     // 1. 一次查出所有订单的明细（解决 N+1）
+ *     List<OrderDetail> allDetails = orderDetailMapper.selectByOrderIds(
+ *         orders.stream().map(Orders::getId).collect(Collectors.toList()));
+ *
+ *     // 2. 按 orderId 分组
+ *     Map<Long, List<OrderDetail>> detailMap = allDetails.stream()
+ *         .collect(Collectors.groupingBy(OrderDetail::getOrderId));
+ *
+ *     for (Orders o : orders) {
+ *         OrderVO vo = new OrderVO();
+ *         BeanUtils.copyProperties(o, vo);
+ *
+ *         // 3. 空明细防御
+ *         List<OrderDetail> detailList = detailMap.getOrDefault(o.getId(), Collections.emptyList());
+ *
+ *         // 4. 拼接加分隔符（顿号）
+ *         String orderDishes = detailList.stream()
+ *             .map(d -> d.getName() + "x" + d.getNumber())
+ *             .collect(Collectors.joining("，"));
+ *         vo.setOrderDishes(orderDishes);
+ *
+ *         vos.add(vo);
+ *     }
+ *     return new PageResult<>(page.getTotal(), vos);
+ * }
+ *
+ */

@@ -87,14 +87,28 @@
     <select id="getPage" resultType="com.sky.entity.Orders">
         select * from orders
         <where>
-            <if test="userId!=null">
+            <if test="dto.userId!=null">
                and user_id = #{userId}
             </if>
             <if test="dto.status!=null">
                and status =#{dto.status}
             </if>
+            <if test="dto.number!=null">
+                and number like concat('%',#{dto.number},'%')
+            </if>
+            <if test="dto.phone!=null">
+                and phone like concat('%',#{dto.phone},'%')
+            </if>
+            <if test="dto.beginTime!=null">
+                and order_time &gt;=#{dto.beginTime}
+            </if>
+            <if test="dto.endTime!=null">
+                and order_time &lt;=#{dto.endTime}
+            </if>
         </where>
     </select>
+
+
 
     <!-- 按订单号查询-->
     <select id="getByNumber" resultType="com.sky.entity.Orders">

@@ -31,6 +31,7 @@ public interface OrderMapper {
      */
     Page<Orders> getPage(@Param("dto") OrdersPageQueryDTO dto,@Param("userId") Long currentUserId);
 
+    Page<Orders> getPage(@Param("dto") OrdersPageQueryDTO dto);
     @NotNull(message="条件不能为空")
     Orders selectByCondition(@NotNull Orders conditions);
 
