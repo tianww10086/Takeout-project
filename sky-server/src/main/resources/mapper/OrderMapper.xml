@@ -82,4 +82,50 @@
         </set>
         where id = #{id}
     </update>
+
+<!--    分页查询-->
+    <select id="getPage" resultType="com.sky.entity.Orders">
+        select * from orders
+        <where>
+            <if test="userId!=null">
+               and user_id = #{userId}
+            </if>
+            <if test="dto.status!=null">
+               and status =#{dto.status}
+            </if>
+        </where>
+    </select>
+
+    <!-- 按订单号查询-->
+    <select id="getByNumber" resultType="com.sky.entity.Orders">
+        select * from orders
+        where number = #{orderNumber}
+    </select>
+
+
+    <!--  动态条件查询-->
+    <select id="selectByCondition" resultType="com.sky.entity.Orders">
+        select * from orders
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="number != null and number != ''">
+                and number = #{number}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <!-- 其他字段按需加 -->
+        </where>
+    </select>
+
+<!--    根据订单id查询订单-->
+    <select id="selectById" resultType="com.sky.entity.Orders">
+        select * from orders
+        where id = #{id}
+    </select>
 </mapper> <!-- 命名空间必须写全限定名，而且是Mapper对应的接口 -->

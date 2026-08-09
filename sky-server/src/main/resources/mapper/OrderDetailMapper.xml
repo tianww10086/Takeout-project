@@ -13,28 +13,11 @@
         </foreach>
     </insert>
 
-<!-- 按订单号查询-->
-    <select id="getByNumber" resultType="com.sky.entity.Orders">
-        select * from orders
-        where number = #{orderNumber}
+
+    <select id="select" resultType="com.sky.entity.OrderDetail">
+        select * from order_detail
+        where order_id =#{id}
     </select>
-<!--  动态条件查询-->
-    <select id="selectByCondition" resultType="com.sky.entity.Orders">
-        select * from orders
-        <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="number != null and number != ''">
-                and number = #{number}
-            </if>
-            <if test="userId != null">
-                and user_id = #{userId}
-            </if>
-            <if test="status != null">
-                and status = #{status}
-            </if>
-            <!-- 其他字段按需加 -->
-        </where>
-    </select>
+
+
 </mapper>

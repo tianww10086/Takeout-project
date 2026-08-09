@@ -2,7 +2,9 @@ package com.sky.mapper;
 
 import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
@@ -12,17 +14,19 @@ import java.util.List;
 @Validated //开启方法参数检验
 public interface OrderDetailMapper
 {
-
+     /**
+      * 批量插入订单详细
+      * @param orderDetails
+      */
      void insertBatch(List<OrderDetail> orderDetails);
 
-     @NotNull(message="条件不能为空")
-     Orders selectByCondition(@NotNull Orders conditions);
 
      /**
-      * 根据订单号查询订单，用于支付回调
-      * @param orderNumber
+      * 查询对应订单详细列表
+      * @param order
       * @return
       */
-     @NotNull(message = "订单号不能为空")
-     Orders getByNumber(@NotNull String orderNumber);
+     List<OrderDetail> select(Orders order);
+
+
 }
