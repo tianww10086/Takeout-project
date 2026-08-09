@@ -2,12 +2,14 @@ package com.sky.service.impl;
 
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.entity.AddressBook;
 import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.entity.ShoppingCart;
 import com.sky.exception.AddressBookBusinessException;
+import com.sky.exception.OrderBusinessException;
 import com.sky.exception.ParamEmptyException;
 import com.sky.exception.ShoppingCartBusinessException;
 import com.sky.mapper.AddressBookMapper;
@@ -15,15 +17,18 @@ import com.sky.mapper.OrderDetailMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.service.OrderService;
+import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -85,8 +90,9 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderTime(LocalDateTime.now()); //设置下单时间
         order.setUserId(currentUserId); //设置下单的用户id
         order.setNumber(String.valueOf( System.currentTimeMillis() ) ); //设置订单号：根据指定规则生成:当前系统的时间戳
-        order.setPayStatus(Orders.UN_PAID); // 设置支付状态，默认未支付
-        order.setStatus(Orders.PENDING_PAYMENT); //设置订单状态，默认待付款 PENDING_PAYMENT
+        //order.setPayStatus(Orders.UN_PAID); // 设置支付状态，默认未支付
+        order.setPayStatus(Orders.PAID); //跳过支付过程，模拟已支付状态
+        order.setStatus(Orders.TO_BE_CONFIRMED); //设置订单状态，待接单
         //手机号在AddressBook中有保存
         order.setPhone(addressBook.getPhone());
         order.setConsignee(addressBook.getConsignee()); //设置收货人
@@ -121,5 +127,44 @@ public class OrderServiceImpl implements OrderService {
                 .orderAmount(order.getAmount())
                 .build();
         return vo;
+    }
+
+    /**
+     * 订单支付接口
+     */
+    @Override
+    public OrderPaymentVO pay(OrdersPaymentDTO dto) {
+
+        //根据订单号获取订单，随后更新
+        Orders order = orderDetailMapper.getByNumber(dto.getOrderNumber());
+        if(order==null)
+            throw new OrderBusinessException("未查询到该订单");
+
+        //幂等：如果是已支付(待接单)，直接返回，不再处理
+        if(order.getStatus()==Orders.TO_BE_CONFIRMED)
+            return null;
+
+        //更新订单状态： status:待接单  PayStatus: 已支付
+        order.setPayStatus(Orders.PAID); //已支付
+        order.setStatus(Orders.TO_BE_CONFIRMED); //待接单
+        order.setCheckoutTime(LocalDateTime.now()); //付款时间
+        order.setPayMethod(dto.getPayMethod()); //付款方式
+        //update更新
+        orderMapper.update(order);
+
+
+        //TODO 4.通知商家(webSocket)
+
+        //5. 构造vo对象返回：由于没有实际调用支付接口，这里使用mock数据返回
+        OrderPaymentVO paymentVO = OrderPaymentVO.builder()
+                .nonceStr(UUID.randomUUID().toString())     // 随机串，无所谓
+                .timeStamp(String.valueOf(System.currentTimeMillis()))  // 当前时间戳
+                .signType("RSA")                             // 固定值
+                .packageStr("prepay_id=mock123")             // 假的 prepay_id
+                .paySign("mock-sign")                        // 假签名
+                .build();
+
+
+        return paymentVO;
     }
 }

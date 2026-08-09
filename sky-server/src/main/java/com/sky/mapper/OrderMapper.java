@@ -11,4 +11,10 @@ public interface OrderMapper {
      * @param order
      */
      void insert(Orders order);
+
+    /**
+     * 更新订单
+     * @param order
+     */
+    void update(Orders order);
 }
