@@ -1,13 +1,8 @@
 package com.sky.service;
 
-import com.sky.dto.OrdersPageQueryDTO;
-import com.sky.dto.OrdersPaymentDTO;
-import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.*;
 import com.sky.result.PageResult;
-import com.sky.vo.OrderPageVO;
-import com.sky.vo.OrderPaymentVO;
-import com.sky.vo.OrderSubmitVO;
-import com.sky.vo.OrderVO;
+import com.sky.vo.*;
 import org.springframework.core.annotation.Order;
 
 public interface OrderService {
@@ -40,10 +35,15 @@ public interface OrderService {
     OrderVO orderDetail(Long id);
 
     /**
-     * 根据订单id取消订单
+     * 用户取消订单 根据订单id取消订单
      * @param id
      */
     void cancelOrder(Long id);
+
+    /**
+     * 商家取消订单
+     */
+    void cancelOrder(OrdersCancelDTO dto);
 
     /**
      * 再来一单
@@ -57,4 +57,38 @@ public interface OrderService {
      * @return
      */
     PageResult<OrderVO> pageQuery(OrdersPageQueryDTO condition);
+
+    /**
+     * 查询个订单状态统计：
+     * 待接单数量
+     * 派送中数量
+     * 待接待数量
+     * @return
+     */
+    OrderStatisticsVO orderStatistics();
+
+    /**
+     * 接单
+     * @param id
+     */
+    void confirm(Long id);
+
+
+    /**
+     * 拒单
+     * @param dto
+     */
+    void reject(OrdersRejectionDTO dto);
+
+    /**
+     * 派送订单
+     * @param id
+     */
+    void delivery(String id);
+
+    /**
+     * 完成订单
+     * @param id
+     */
+    void complete(String id);
 }

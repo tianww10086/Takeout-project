@@ -55,4 +55,10 @@ public interface AddressBookMapper {
     @Delete("delete from address_book where id = #{id}")
     void deleteById(Long id);
 
+    /**
+     * 根据地址id集合查询地址列表
+     * @param addressIds
+     * @return
+     */
+    List<AddressBook> selectByIds(List<Long> addressIds);
 }

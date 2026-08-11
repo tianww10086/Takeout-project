@@ -17,6 +17,15 @@
         </where>
     </select>
 
+<!--    根据地址id集合查询地址列表-->
+    <select id="selectByIds" resultType="com.sky.entity.AddressBook">
+        select * from address_book
+        where id in
+        <foreach collection="addressIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
     <update id="update" parameterType="addressBook">
         update address_book
         <set>

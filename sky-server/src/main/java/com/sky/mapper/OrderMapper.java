@@ -46,4 +46,5 @@ public interface OrderMapper {
 
     Orders selectById(Long id);
 
+    Integer countByStatus(int i);
 }

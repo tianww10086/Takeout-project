@@ -142,4 +142,10 @@
         select * from orders
         where id = #{id}
     </select>
+
+
+    <select id="countByStatus" resultType="java.lang.Integer">
+        select count(*) from orders
+        where status = #{status}
+    </select>
 </mapper> <!-- 命名空间必须写全限定名，而且是Mapper对应的接口 -->
