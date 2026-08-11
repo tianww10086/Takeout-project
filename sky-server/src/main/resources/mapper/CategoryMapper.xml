@@ -39,10 +39,13 @@
     </select>
 
 <!--    根据分类类型查询分类-->
-    <select id="listByType" resultType="com.sky.entity.Category">
+    <select id="listByType" resultType="category">
         select * from category
-        where
-        type = #{type}
+        <where>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+        </where>
     </select>
 
 

@@ -59,5 +59,5 @@ public interface CategoryService {
      * @param type
      * @return
      */
-    List<Category> listByTypeServe(String type);
+    List<Category> listByTypeServe(Integer type);
 }

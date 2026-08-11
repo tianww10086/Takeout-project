@@ -36,12 +36,13 @@ public class GlobalExceptionHandler {
         log.error("异常信息：{}", ex.getMessage());
         return Result.error(ex.getMessage());
     }
+
+
     /**
      * 捕获sql异常
      * @param e 表示 SQL 语句由于违反数据库完整性约束而失败。
      * @return 返回错误信息
      */
-
     @ExceptionHandler
     public Result exceptionHandler(SQLIntegrityConstraintViolationException e){
       //Duplicate entry 'employee1' for key 'employee.idx_username'

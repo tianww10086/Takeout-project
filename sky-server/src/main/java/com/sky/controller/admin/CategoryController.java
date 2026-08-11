@@ -88,7 +88,7 @@ public class CategoryController {
      */
     @GetMapping("/list")
     @ApiOperation("根据type返回分类列表")
-    public Result<List<Category>> listByType(String type){
+    public Result<List<Category>> listByType(Integer type){
 
         return Result.success(service.listByTypeServe(type));
     }

@@ -20,18 +20,6 @@ public class ShopController {
     @Autowired
     RedisTemplate template;
 
-//    /**
-//     * 修改店铺状态
-//     * @param status
-//     * @return
-//     */
-//    @PutMapping("/{status}")
-//    public Result setStatus(@PathVariable Integer status){
-//        log.info("设置店铺状态为{}",status==1 ?"营业中":"打烊");
-//        var ValueOperation = template.opsForValue(); //获取操作字符串类型的对象
-//        ValueOperation.set("SHOP_STATUS",status);
-//        return Result.success();
-//    }
 
         @GetMapping("/status")
         @ApiOperation("获取营业状态")

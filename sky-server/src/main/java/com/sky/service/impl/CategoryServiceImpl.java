@@ -11,6 +11,7 @@ import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -132,10 +133,9 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public List<Category> listByTypeServe(String type) {
-            //调用mapper层接口
-        int IType = Integer.parseInt(type);
-
-        return  categoryMapper.listByType(IType);
+    public List<Category> listByTypeServe(Integer type) {
+        if(type==null)
+            return categoryMapper.listAll();
+        return  categoryMapper.listByType(type);
     }
 }

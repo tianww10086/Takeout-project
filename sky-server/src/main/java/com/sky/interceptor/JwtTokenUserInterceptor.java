@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 @Slf4j
-public class JwtTokenAdminInterceptor implements HandlerInterceptor {
+public class JwtTokenUserInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtProperties jwtProperties;
@@ -41,14 +42,14 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
         }
 
         //1、从请求头中获取令牌
-        String token = request.getHeader(jwtProperties.getAdminTokenName());
+        String token = request.getHeader(jwtProperties.getUserTokenName());
 
         //2、校验令牌
         try {
-            log.info("jwtAdmin校验:{}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token); //根据token解析出claims（载荷)
-            Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString()); //获取员工id
-            BaseContext.setCurrentId(empId);//将id存入到本地线程里
+            log.info("jwtUser校验:{}", token);
+            Claims claims = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token); //根据token解析出claims（载荷)
+            Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString()); //获取员工id
+            BaseContext.setCurrentId(userId);//将id存入到本地线程里
             //3、通过，放行
             return true;
         } catch (Exception ex) {

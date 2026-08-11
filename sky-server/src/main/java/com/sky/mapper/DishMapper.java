@@ -73,4 +73,7 @@ public interface DishMapper
     select * from dish where category_id = #{id}
     """)
     List<Dish> selectBatchId(long id);
+
+
+    List<Dish> list(Dish dish);
 }

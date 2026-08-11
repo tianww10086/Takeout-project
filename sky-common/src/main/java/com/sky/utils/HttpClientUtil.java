@@ -40,28 +40,32 @@ public class HttpClientUtil {
         String result = "";
         CloseableHttpResponse response = null;
 
+        // 构建URI路径，URIBuilder会自动拼接?和&
         try{
-            URIBuilder builder = new URIBuilder(url);
+            URIBuilder builder = new URIBuilder(url); //基础路径
+            //将参数以 key=value的形式拼接， &由builder自动拼接
             if(paramMap != null){
                 for (String key : paramMap.keySet()) {
                     builder.addParameter(key,paramMap.get(key));
                 }
             }
-            URI uri = builder.build();
+            URI uri = builder.build(); //构建完成后获取URI
 
             //创建GET请求
-            HttpGet httpGet = new HttpGet(uri);
+            HttpGet httpGet = new HttpGet(uri); //使用get请求该地址
 
             //发送请求
-            response = httpClient.execute(httpGet);
+            response = httpClient.execute(httpGet); //执行请求，返回response对象
 
             //判断响应状态
             if(response.getStatusLine().getStatusCode() == 200){
+                //获取返回实体，转化为字符串返回
                 result = EntityUtils.toString(response.getEntity(),"UTF-8");
             }
         }catch (Exception e){
             e.printStackTrace();
         }finally {
+            //保证关闭资源
             try {
                 response.close();
                 httpClient.close();
