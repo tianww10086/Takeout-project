@@ -91,4 +91,6 @@ public interface OrderService {
      * @param id
      */
     void complete(String id);
+
+    void reminder(String id);
 }

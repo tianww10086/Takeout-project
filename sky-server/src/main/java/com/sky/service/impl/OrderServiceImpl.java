@@ -54,6 +54,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     WebSocketServer socketServer;
+    @Autowired
+    private WebSocketServer webSocketServer;
+
     /**
      * 用户下单实现：需要从前端接收的数据中，来构造order表和orderDetail表的数据
      * 所以需要这两个的数据库操作接口
@@ -542,6 +545,26 @@ public class OrderServiceImpl implements OrderService {
         //更新订单送达时间
         o.setDeliveryTime(LocalDateTime.now());
         orderMapper.update(o);
+    }
+
+    /**
+     * 客户催单
+     * @param id
+     */
+    @Override
+    public void reminder(String id) {
+        Long idL =Long.valueOf(id);
+        Orders orders = orderMapper.selectById(idL); //查询订单是否存在
+        if(orders==null )
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+
+        //当用户点击催单时，后端发送消息给客户端（管理端）进行催单
+        Map<String,Object> map = new HashMap<>();
+        map.put("type",2); //1为来单提醒，2为客户催单
+        map.put("orderId",id);
+        map.put("content","订单号："+orders.getNumber());
+        String json = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
     }
 }
 

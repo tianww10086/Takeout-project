@@ -24,7 +24,7 @@ public class OrderTask {
 
         //outTime：如果订单时间小于当前时间的再减去15分钟，则说明超时，
         LocalDateTime outTime = LocalDateTime.now().minusMinutes(15);
-       List<Orders> list= orderMapper.getByStatusAndOrderTimeLT(Orders.PENDING_PAYMENT,outTime);
+       List<Orders> list= orderMapper.getByStatusAndOrderTimeLT(Orders.UN_PAID,outTime);
        if(list !=null && list.size()>0){
            for(Orders order:list){
                order.setStatus(Orders.CANCELLED);
