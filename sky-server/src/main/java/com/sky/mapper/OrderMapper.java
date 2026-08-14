@@ -6,8 +6,11 @@ import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Mapper
 public interface OrderMapper {
@@ -47,4 +50,13 @@ public interface OrderMapper {
     Orders selectById(Long id);
 
     Integer countByStatus(int i);
+
+    @Select("""
+           select * from orders
+           where
+               pay_status=#{unPaid}
+           AND
+               order_time<#{now}
+           """)
+    List<Orders> getByStatusAndOrderTimeLT(Integer unPaid, LocalDateTime now);
 }

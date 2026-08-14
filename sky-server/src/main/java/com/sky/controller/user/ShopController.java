@@ -19,13 +19,12 @@ public class ShopController {
 
     @Autowired
     RedisTemplate template;
-
-
         @GetMapping("/status")
         @ApiOperation("获取营业状态")
         public Result<Integer> getStatus(){
             log.info("获取店铺状态");
-            var ValueOperation = template.opsForValue(); //获取操作字符串类型的对象
+            var ValueOperation = template.opsForValue(); //获取redis操作字符串类型的对象
+            //从redis中换取缓存key为SHOP_STATUS的状态
             Integer status = (Integer) ValueOperation.get("SHOP_STATUS");
 
             return Result.success(status);

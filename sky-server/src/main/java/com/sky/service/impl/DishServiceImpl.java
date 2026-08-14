@@ -13,6 +13,7 @@ import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +65,7 @@ public class DishServiceImpl implements DishService {
         if(dishMapper.existDish(dish.getName()) !=null){
             throw new DishExistentException("菜品已存在");
         }
+        //插入菜品
         dishMapper.insert(dish);
 
         //根据dish实体获取id
@@ -91,6 +93,7 @@ public class DishServiceImpl implements DishService {
      */
     @Transactional
     @Override
+
     public void deleteWithFlavor(String ids) {
         if(ids ==null || ids.trim().isEmpty())
             throw new RuntimeException("不存在id,参数错误");
@@ -100,7 +103,6 @@ public class DishServiceImpl implements DishService {
             int id = Integer.parseInt(idA.trim());
             //将id转化为整型处理
             idList.add(id);
-
         }
         //根据菜品id列表删除菜品
         dishMapper.deleteListById(idList);
@@ -115,6 +117,7 @@ public class DishServiceImpl implements DishService {
      */
     @Override
     @Transactional
+    @CacheEvict() //清除掉所有缓存
     public void updateWithFlavor(DishDTO dish) {
         Dish dish1 = new Dish();
         BeanUtils.copyProperties(dish,dish1); //复制属性

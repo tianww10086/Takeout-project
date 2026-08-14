@@ -66,7 +66,7 @@ public class SetmealController {
     public Result<PageResult<SetmealPageVO>> pageQuery(SetmealPageQueryDTO dto){
         PageResult<SetmealPageVO> pageResult = service.pageQuery(dto);
 
-        return Result.success(pageResult);   // ← 包上 Result
+        return Result.success(pageResult);
     }
 
 

@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -61,10 +62,11 @@ public class DishController {
      */
     @PostMapping
     @ApiOperation("添加菜品")
+    //菜品有分类，这个分类下的菜品新增时，要删除这个分类下的菜品缓存，不触碰其他菜品分类缓存
+    @CacheEvict(cacheNames = "dishCache",key="#dto.categoryId")
     public Result save(@RequestBody DishDTO dto){
         //清理缓存数据
         String key = "dish_"+dto.getCategoryId();
-        template.delete(key); //清除与这个菜品分类相同的缓存
         log.info("新增菜品：{}",dto);
 
         service.saveWithFlavor(dto);
@@ -72,10 +74,11 @@ public class DishController {
     }
 
     /**
-     * 删除菜品接口
+     * 传入菜品ids，通过id集合删除菜品
      */
     @DeleteMapping
     @ApiOperation("删除菜品")
+    @CacheEvict(cacheNames = "dishCache",allEntries = true) //删除全部缓存
     public Result delete(String ids){
         log.info("删除菜品（id：{}）",ids);
         if(ids.isEmpty())
@@ -93,12 +96,13 @@ public class DishController {
      */
     @PutMapping
     @ApiOperation("修改菜品")
+    @CacheEvict(cacheNames = "dishCache",allEntries = true) //删除全部缓存
     public Result update(@RequestBody DishDTO dish){
         log.info("修改菜品:{}",dish);
 
         service.updateWithFlavor(dish);
 
-        ClearCache("dish_   *");
+        ClearCache("dish_*");
 
         return Result.success();
     }
@@ -122,12 +126,10 @@ public class DishController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("根据菜品id修改状态")
+    @CacheEvict(cacheNames = "dishCache",allEntries = true) //删除全部缓存
     public Result OnOff(@PathVariable Integer status,Long id){
         log.info("修改菜品id为{} 的状态为{}",id,status);
         service.updateWithStatus(status,id);
-
-        ClearCache("dish_*");
-
         return Result.success();
     }
 
@@ -145,9 +147,8 @@ public class DishController {
     }
 
     /**
-     * 清理redis缓存
+     * 清理redis缓存辅助方法
      */
-
     private void ClearCache(String pattern){
         //将所有的菜品缓存数据删除掉
         Set keys = template.keys(pattern);

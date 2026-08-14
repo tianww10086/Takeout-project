@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
@@ -21,6 +22,7 @@ import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
 import com.sky.vo.*;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +52,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     ShoppingCartMapper shoppingCartMapper;
 
+    @Autowired
+    WebSocketServer socketServer;
     /**
      * 用户下单实现：需要从前端接收的数据中，来构造order表和orderDetail表的数据
      * 所以需要这两个的数据库操作接口
@@ -151,7 +155,7 @@ public class OrderServiceImpl implements OrderService {
      * 订单支付接口
      */
     @Override
-    @Transactional //会设计更新订单
+    @Transactional //会涉及更新订单
     public OrderPaymentVO pay(OrdersPaymentDTO dto) {
         //根据订单号获取订单，随后更新
         Orders order = orderMapper.getByNumber(dto.getOrderNumber());
@@ -171,6 +175,14 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.update(order);
 
         //TODO 4.通知商家(webSocket)
+        //封装推送数据：type orderId, content
+        Map<String,Object> map = new HashMap<>();
+        map.put("type",1); //1标识来单提醒，2表示客户催单
+        map.put("orderId",order.getId());
+        map.put("content","订单号："+order.getNumber());
+        //将map转为json格式字符串
+        String json = JSON.toJSONString(map);
+        socketServer.sendToAllClient(json); //向客户端浏览器推送消息
 
         //5. 构造vo对象返回：由于没有实际调用支付接口，这里使用mock数据返回
         OrderPaymentVO paymentVO = OrderPaymentVO.builder()
