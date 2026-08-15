@@ -4,9 +4,12 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.SetmealDish;
+import com.sky.exception.BaseException;
 import com.sky.exception.DishExistentException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.service.DishService;
 import com.sky.vo.DishPageVO;
 import com.sky.vo.DishVO;
@@ -26,14 +29,15 @@ public class DishServiceImpl implements DishService {
 
     //自动注入Dish数据库接口
     @Autowired
-    DishMapper dishMapper;
+    private DishMapper dishMapper;
 
     //自动注入Flavor数据库接口
     @Autowired
-    DishFlavorMapper flavorMapper;
+    private DishFlavorMapper flavorMapper;
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
-
+    @Autowired
+    private SetmealDishMapper setmealDishMapper;
 
     @Override
     public List<DishPageVO> pageQuery(DishPageQueryDTO dishPageQueryDTO) {
@@ -88,12 +92,13 @@ public class DishServiceImpl implements DishService {
     }
 
     /**
-     *  根据id 批量删除菜品和 口味
-     * @param ids 1,2,3 根据,分隔
+     *
+     *  根据id 批量删除菜品和 口味 如果该菜品的id存在于setmeal_dish表，
+     *  则说明该菜品与套餐有关联，则报出异常："该菜品与套餐有关联，删除失败"
+     * @param ids 1,2,3 根据,分隔，传入菜品ids
      */
     @Transactional
     @Override
-
     public void deleteWithFlavor(String ids) {
         if(ids ==null || ids.trim().isEmpty())
             throw new RuntimeException("不存在id,参数错误");
@@ -104,10 +109,17 @@ public class DishServiceImpl implements DishService {
             //将id转化为整型处理
             idList.add(id);
         }
+
+        List<SetmealDish> setmealDishes = setmealDishMapper.selectBatch(idList);
+        //如果这个集合不为空，则说明要删除的菜品之一与套餐有关联,抛出异常
+        if(!setmealDishes.isEmpty()){
+            throw new BaseException("当前删除的菜品与套餐有关联，禁止删除");
+        }
+        //根据菜品id列表删除口味 先删子表
+        dishFlavorMapper.deleteListById(idList);
         //根据菜品id列表删除菜品
         dishMapper.deleteListById(idList);
-        //根据菜品id列表删除口味
-        dishFlavorMapper.deleteListById(idList);
+
     }
 
     /**
