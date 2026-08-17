@@ -4,17 +4,24 @@ import com.alibaba.fastjson.JSON;
 import com.sky.dto.DataOverViewQueryDTO;
 import com.sky.mapper.ReportMapper;
 import com.sky.service.ReportService;
-import com.sky.vo.OrderReportVO;
-import com.sky.vo.SalesTop10ReportVO;
-import com.sky.vo.TurnoverReportVO;
-import com.sky.vo.UserReportVO;
+import com.sky.service.WorkspaceService;
+import com.sky.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.StringBuilders;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,6 +34,8 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private ReportMapper reportMapper;
 
+    @Autowired
+    private WorkspaceService workspaceService;
     /**
      *
      * @param begin 起始时间
@@ -197,6 +206,87 @@ public class ReportServiceImpl implements ReportService {
                        .map(String::valueOf)
                        .collect(Collectors.joining(",")))
                .build();
+
+    }
+
+    /**
+     * 导出运营数据报表
+     * @param response
+     */
+    @Override
+    public void exportBusinessData(HttpServletResponse response) {
+        //1. 查询数据库，获取营业数据
+        LocalDate begin = LocalDate.now().minusDays(30);
+        LocalDate end = LocalDate.now().minusDays(1);
+
+        //查询概览数据
+        BusinessDataVO businessData = workspaceService.getBusinessData(LocalDateTime.of(begin, LocalTime.MIN)
+                , LocalDateTime.of(end, LocalTime.MIN));
+        
+
+        //2. 通过POI将数据写入Excel文件
+        InputStream resourceAsStream = this.
+                getClass()
+                .getClassLoader()
+                .getResourceAsStream("template/运营数据报表模板.xlsx");
+        try{
+            XSSFWorkbook excel = null;
+            if (resourceAsStream != null) {
+                excel = new XSSFWorkbook(resourceAsStream);
+            }
+
+            //获得sheet页
+            XSSFSheet sheetAt = excel.getSheet("Sheet1");
+            //获得第二行
+            XSSFRow row = sheetAt.getRow(1);
+            //填充数据 --时间
+            row.getCell(1).setCellValue("时间："+begin+"至"+end);
+
+            row = sheetAt.getRow(3);//获取第四行
+            row.getCell(2).setCellValue(businessData.getTurnover()); //填充营业额数据
+            row.getCell(4).setCellValue(businessData.getOrderCompletionRate()); //填充订单完成率
+            row.getCell(6).setCellValue(businessData.getNewUsers()); //获取新增用户数
+
+            row = sheetAt.getRow(4);// 获取第五行
+            row.getCell(2).setCellValue(businessData.getValidOrderCount());//填充有效订单
+            row.getCell(4).setCellValue(businessData.getUnitPrice()); //填充平均客单价
+
+
+            //填充明细数据
+            for(int i=0;i<30;i++){
+                LocalDate date = begin.plusDays(i);
+
+                //查询某一天的营业数据
+                BusinessDataVO businessDataVO =
+                        workspaceService.getBusinessData(
+                                LocalDateTime.of(date,LocalTime.MIN)
+                                ,LocalDateTime.of(date,LocalTime.MAX));
+
+                //获得某一行
+                row = sheetAt.getRow(7+i);
+                row.getCell(1).setCellValue(date.toString());
+                row.getCell(2).setCellValue(businessDataVO.getTurnover()); //填充营业额
+                row.getCell(3).setCellValue(businessDataVO.getValidOrderCount()); //填充有效订单数
+                row.getCell(4).setCellValue(businessDataVO.getOrderCompletionRate()); //填充订单完成率
+                row.getCell(5).setCellValue(businessDataVO.getUnitPrice());
+                row.getCell(6).setCellValue(businessDataVO.getNewUsers());
+
+
+            }
+
+
+            //3. 通过输出流将Excel文件下载到客户端浏览器
+
+            ServletOutputStream outputStream1 = response.getOutputStream();
+            excel.write(outputStream1);
+            excel.close();
+            outputStream1.close();
+
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
 
 
     }
