@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Select;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
@@ -59,4 +60,8 @@ public interface OrderMapper {
                order_time<#{now}
            """)
     List<Orders> getByStatusAndOrderTimeLT(Integer unPaid, LocalDateTime now);
+
+    Integer countByMap(Map map);
+
+    Double sumByMap(Map map);
 }

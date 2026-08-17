@@ -181,7 +181,7 @@ public class ReportServiceImpl implements ReportService {
         HashMap<String,Object> map = new HashMap<>();
         map.put("beginTime",beginTime);
         map.put("endTime",endTime);
-        map.put("status",5);
+    map.put("status",5);
         map.put("N",10);
        List<Map<String,Object>> tops= reportMapper.findTopNGoods(map);
 

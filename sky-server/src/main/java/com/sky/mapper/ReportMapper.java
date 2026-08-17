@@ -37,4 +37,5 @@ public interface ReportMapper {
     Integer countOrderByMap(HashMap<String, Object> map);
 
     List<Map<String,Object>> findTopNGoods(HashMap<String, Object> map);
+
 }

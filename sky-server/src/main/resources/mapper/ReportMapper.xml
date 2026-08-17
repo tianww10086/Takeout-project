@@ -41,7 +41,7 @@
         </where>
     </select>
 
-
+<!--    查询销售量为前十的商品数据-->
     <select id="findTopNGoods" resultType="java.util.Map">
         select od.name, sum(od.number) as number
         from orders as o inner join order_detail as od
@@ -61,4 +61,7 @@
         ORDER BY sum(od.number) desc, od.name
         limit #{N}
     </select>
+
+
+
 </mapper>
